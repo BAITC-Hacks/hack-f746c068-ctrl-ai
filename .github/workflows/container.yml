@@ -1,0 +1,39 @@
+name: Container verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Backend tests
+        run: |
+          python -m pip install -r backend/requirements-dev.txt
+          python -m unittest discover -s backend/tests
+      - name: Build and start container
+        run: docker compose up --build -d --wait --wait-timeout 180
+      - name: Check web, API, access and completion
+        run: docker compose exec -T web python -m backend.scripts.smoke_container
+      - name: Check persistence after restart
+        run: |
+          docker compose restart web
+          docker compose up -d --wait --wait-timeout 90
+          docker compose exec -T web python -m backend.scripts.smoke_container --replay
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Stop container
+        if: always()
+        run: docker compose down

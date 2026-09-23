@@ -7,6 +7,8 @@ services:
       PORT: "8000"
       CAREER_QUEST_STATE_PATH: /var/data/state.sqlite3
       CAREER_QUEST_AUTH_FILE: /var/data/access.json
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      CAREER_QUEST_OPENAI_MODEL: ${CAREER_QUEST_OPENAI_MODEL:-gpt-4o-mini}
     volumes:
       - career-quest-data:/var/data
     restart: unless-stopped

@@ -4,4 +4,6 @@ __pycache__/
 .pytest_cache/
 .pnpm-store/
 .env
+.env.*
+!.env.example
 backend/runtime/

@@ -7,6 +7,7 @@ import { SkillGapChart } from '../components/profile/SkillGapChart'
 import { GapList } from '../components/profile/GapList'
 import { RecommendationCard } from '../components/recommendations/RecommendationCard'
 import { DecisionLab } from '../components/recommendations/DecisionLab'
+import { AiRecommendation } from '../components/recommendations/AiRecommendation'
 import { CompleteModal } from '../components/progress/CompleteModal'
 import { EmptyState, ErrorState, Skeleton } from '../components/ui'
 import { useAuth } from '../auth/AuthContext'
@@ -78,6 +79,16 @@ export function ProfilePage() {
 
         {recs.error && <ErrorState error={recs.error} onRetry={recs.refetch} />}
         {complete.error && <ErrorState error={complete.error} />}
+
+        {!USE_MOCK && profile.data && (
+          <AiRecommendation
+            key={`${id}:${profile.dataUpdatedAt}`}
+            employeeId={id}
+            disabled={!!pending}
+            onPreview={onPreview}
+            onComplete={onComplete}
+          />
+        )}
 
         {recs.isLoading && (
           <div className="space-y-4">

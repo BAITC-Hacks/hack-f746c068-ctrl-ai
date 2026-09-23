@@ -16,11 +16,11 @@ const scoreLabel = (value: number) => USE_MOCK ? String(Math.round(value * 100))
 
 export function DecisionLab({ employeeId, recommendations, selectedEventId, onSelectEvent }: Props) {
   const [alternativeId, setAlternativeId] = useState('')
-  const firstId = recommendations.some((item) => item.activityId === selectedEventId)
-    ? selectedEventId : recommendations[0]?.activityId ?? ''
   const options = useComparisonOptions(employeeId)
-  const alternatives = (options.data?.recommendations ?? recommendations.map((item) => ({ event_id: item.activityId, title: item.title })))
-    .filter((item) => item.event_id !== firstId)
+  const available = options.data?.recommendations ?? recommendations.map((item) => ({ event_id: item.activityId, title: item.title }))
+  const firstId = available.some((item) => item.event_id === selectedEventId)
+    ? selectedEventId : recommendations[0]?.activityId ?? ''
+  const alternatives = available.filter((item) => item.event_id !== firstId)
   const secondId = alternatives.some((item) => item.event_id === alternativeId)
     ? alternativeId : alternatives[0]?.event_id ?? ''
   const preview = useActivitySimulation(employeeId, firstId)
@@ -59,7 +59,7 @@ export function DecisionLab({ employeeId, recommendations, selectedEventId, onSe
               onChange={(event) => onSelectEvent(event.target.value)}
               className="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
             >
-              {recommendations.map((item) => <option key={item.activityId} value={item.activityId}>{item.title}</option>)}
+              {available.map((item) => <option key={item.event_id} value={item.event_id}>{item.title}</option>)}
             </select>
           </label>
           {alternatives.length > 0 && (
@@ -80,7 +80,7 @@ export function DecisionLab({ employeeId, recommendations, selectedEventId, onSe
         {options.error && <p className="mt-2 text-xs text-amber-700">Полный список альтернатив недоступен; показаны только видимые рекомендации.</p>}
 
         <div className="mt-5 border-t border-slate-200 pt-5">
-          <h3 className="text-sm font-semibold text-slate-900">Если выполнить «{firstCard?.title}»</h3>
+          <h3 className="text-sm font-semibold text-slate-900">Если выполнить «{firstCard?.title ?? available.find((item) => item.event_id === firstId)?.title}»</h3>
           {preview.isLoading && <Skeleton className="mt-3 h-36" />}
           {preview.error && <div className="mt-3"><ErrorState error={preview.error} onRetry={() => { void preview.refetch() }} /></div>}
           {preview.data && (

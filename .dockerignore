@@ -6,6 +6,9 @@
 **/__pycache__
 **/*.pyc
 **/.env
+**/.env.*
+!frontend/.env.production
+!frontend/.env.development
 **/*.local
 backend/runtime
 .pytest_cache

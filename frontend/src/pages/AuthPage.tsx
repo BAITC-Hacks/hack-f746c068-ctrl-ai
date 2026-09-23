@@ -138,10 +138,10 @@ export function AuthPage({ mode }: { mode: Mode }) {
           </div>
 
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900">
-            {mode === 'login' ? 'Вход' : 'Регистрация'}
+            {!USE_MOCK || mode === 'login' ? 'Вход' : 'Регистрация'}
           </h2>
           <p className="mt-2 text-slate-600">
-            {mode === 'login' ? 'Рады видеть вас снова.' : 'Создайте аккаунт, чтобы видеть свой путь развития.'}
+            {!USE_MOCK || mode === 'login' ? 'Рады видеть вас снова.' : 'Создайте аккаунт, чтобы видеть свой путь развития.'}
           </p>
 
           {USE_MOCK && (
@@ -157,8 +157,8 @@ export function AuthPage({ mode }: { mode: Mode }) {
           <form onSubmit={submit} className="mt-6 space-y-4">
             {!USE_MOCK ? (
               <>
-                <Field label="Токен доступа" hint="Токены выдаёт бэкенд: файл backend/runtime/access.json (роли hr и employee).">
-                  <input className={inputCls} value={token} onChange={(e) => setToken(e.target.value)} placeholder="Вставьте токен" required autoFocus />
+                <Field label="Токен доступа" hint="Введите токен сотрудника или HR, выданный организатором демонстрации.">
+                  <input type="password" autoComplete="off" className={inputCls} value={token} onChange={(e) => setToken(e.target.value)} placeholder="Вставьте токен" required autoFocus />
                 </Field>
               </>
             ) : (
