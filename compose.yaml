@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      CAREER_QUEST_STATE_PATH: /var/data/state.sqlite3
+      CAREER_QUEST_AUTH_FILE: /var/data/access.json
+    volumes:
+      - career-quest-data:/var/data
+    restart: unless-stopped
+
+volumes:
+  career-quest-data:
