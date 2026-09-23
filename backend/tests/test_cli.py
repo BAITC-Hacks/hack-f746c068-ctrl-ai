@@ -26,6 +26,13 @@ class CliTests(unittest.TestCase):
         self.assertEqual(result.stdout, "")
         self.assertEqual(json.loads(result.stderr)["error"], "employee_not_found")
 
+    def test_readiness_command(self):
+        result = self.run_cli("readiness", "E001")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["target_grade"], "Senior")
+        self.assertAlmostEqual(payload["readiness_percent"], 100 * 4.25 / 5.2)
+
 
 if __name__ == "__main__":
     unittest.main()
