@@ -6,6 +6,7 @@ import { ProfileHeader } from '../components/profile/ProfileHeader'
 import { SkillGapChart } from '../components/profile/SkillGapChart'
 import { GapList } from '../components/profile/GapList'
 import { RecommendationCard } from '../components/recommendations/RecommendationCard'
+import { DecisionLab } from '../components/recommendations/DecisionLab'
 import { CompleteModal } from '../components/progress/CompleteModal'
 import { EmptyState, ErrorState, Skeleton } from '../components/ui'
 import { useAuth } from '../auth/AuthContext'
@@ -21,6 +22,12 @@ export function ProfilePage() {
   const [pending, setPending] = useState<{ aid: string; kind: 'complete' | 'skip' | 'decline' } | null>(null)
   const [result, setResult] = useState<ProgressResult | null>(null)
   const [highlight, setHighlight] = useState<string | null>(null)
+  const [previewEventId, setPreviewEventId] = useState('')
+
+  const onPreview = (eventId: string) => {
+    setPreviewEventId(eventId)
+    document.getElementById('decision-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   const onComplete = (aid: string) => {
     setPending({ aid, kind: 'complete' })
@@ -52,7 +59,7 @@ export function ProfilePage() {
       <section>
         <div className="mb-5 mt-4 flex items-baseline justify-between">
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Рекомендации</h2>
-          <span className="hidden text-xs text-slate-500 sm:inline">ранжирование — детерминированный scoring, текст — LLM</span>
+          <span className="hidden text-xs text-slate-500 sm:inline">ранжирование и объяснение — прозрачные правила</span>
         </div>
 
         {recs.error && <ErrorState error={recs.error} onRetry={recs.refetch} />}
@@ -82,12 +89,23 @@ export function ProfilePage() {
               busy={pending?.aid === r.activityId ? pending.kind : null}
               disabled={!!pending}
               onComplete={() => onComplete(r.activityId)}
+              onPreview={() => onPreview(r.activityId)}
               onSkip={() => onReject(r.activityId, 'skip')}
               onDecline={() => onReject(r.activityId, 'decline')}
             />
           ))}
         </div>
       </section>
+
+      {recs.data && recs.data.length > 0 && (
+        <DecisionLab
+          key={`${id}:${recs.data.map((item) => item.activityId).join(',')}`}
+          employeeId={id}
+          recommendations={recs.data}
+          selectedEventId={previewEventId}
+          onSelectEvent={setPreviewEventId}
+        />
+      )}
 
       <CompleteModal result={result} onClose={() => { setResult(null); setTimeout(() => setHighlight(null), 2500) }} />
     </div>

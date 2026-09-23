@@ -92,6 +92,125 @@ export interface ProgressResult {
   newRecommendations: Recommendation[]
 }
 
+// Отдельный контракт блока «Что, если?»: имена полей здесь намеренно
+// совпадают с Pydantic-ответами backend, а не с legacy camelCase API фронтенда.
+export interface DecisionSkillChange {
+  skill_id: string
+  before: number
+  after: number
+  gain: number
+  max_level: number
+  applied_gain: number
+}
+
+export interface DecisionReadiness {
+  employee_id: string
+  role: string
+  current_grade: string
+  target_grade: string | null
+  status: 'calculated' | 'top_grade'
+  readiness_percent: number | null
+  mandatory_readiness_percent: number | null
+  meets_mandatory: boolean | null
+  skills: Record<string, {
+    current: number
+    required: number
+    progress_percent: number
+    importance: number
+    mandatory: boolean
+    fulfilled: boolean
+  }>
+}
+
+export interface DecisionGaps {
+  employee_id: string
+  role: string
+  current_grade: string
+  target_grade: string | null
+  status: 'calculated' | 'top_grade'
+  total_target_skills: number
+  fulfilled_target_skills: number
+  skills_with_gap: number
+  mandatory_skills_with_gap: number
+  gaps: Record<string, {
+    current: number
+    required: number
+    gap: number
+    normalized_gap: number
+    importance: number
+    weighted_gap: number
+    mandatory: boolean
+    fulfilled: boolean
+  }>
+}
+
+export interface DecisionSkillImpact {
+  skill_id: string
+  current: number
+  required: number
+  gap: number
+  gain: number
+  max_level: number
+  projected: number
+  projected_gap: number
+  gap_reduction: number
+  importance: number
+  mandatory: boolean
+  weighted_gap_reduction: number
+  mandatory_factor: number
+  benefit: number
+}
+
+export interface DecisionRecommendation {
+  event_id: string
+  title: string
+  score: number
+  grade_gap_benefit: number
+  skill_impact: DecisionSkillImpact[]
+  participation: {
+    completed: number
+    skipped: number
+    declined: number
+    same_event_completed: number
+  }
+  history_multiplier: number
+  explanation: string
+}
+
+export interface DecisionRecommendations {
+  employee_id: string
+  role: string
+  current_grade: string
+  target_grade: string | null
+  status: 'recommended' | 'top_grade' | 'no_skill_gaps' | 'no_matching_activity'
+  recommendations: DecisionRecommendation[]
+}
+
+export interface ActivitySimulation {
+  employee_id: string
+  event_id: string
+  title: string
+  target_grade: string | null
+  skill_changes: DecisionSkillChange[]
+  readiness_before: DecisionReadiness
+  readiness_after: DecisionReadiness
+  gaps_before: DecisionGaps
+  gaps_after: DecisionGaps
+  recommendations_after: DecisionRecommendations
+}
+
+export interface ActivityComparison {
+  employee_id: string
+  target_grade: string | null
+  first: DecisionRecommendation
+  second: DecisionRecommendation
+  preferred_event_id: string
+  score_delta: number
+  explanation: string
+  readiness_after_first: DecisionReadiness
+  readiness_after_second: DecisionReadiness
+}
+
 export interface HrStats {
   totalEmployees: number
   avgReadiness: number

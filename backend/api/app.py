@@ -21,7 +21,12 @@ from backend.data_loader import DEFAULT_DATA_DIR, DatasetValidationError, load_d
 from backend.engine.grade_progress import GradeReadinessResult, get_employee_grade_readiness
 from backend.api.presenters import CompletionResponse, HRDashboardResult, complete_activity_response, get_hr_dashboard
 from backend.engine.progress import ProgressError
-from backend.engine.recommendation import RecommendationError, RecommendationResult, get_recommendations
+from backend.engine.recommendation import (
+    RecommendationError, RecommendationResult, get_all_recommendations, get_recommendations,
+)
+from backend.engine.simulation import (
+    ComparisonResult, SimulationError, SimulationResult, compare_activities, simulate_activity,
+)
 from backend.engine.skill_gap import SkillGapError, SkillGapResult, get_employee_skill_gaps
 from backend.models import Activity, CareerTrack, Employee, HistoryRecord, Model, Skill
 from backend.storage import DatasetStore, StateConflict
@@ -106,7 +111,8 @@ def create_app(*, state_path: str | Path | None = None, data_dir: str | Path | N
             status = 409
         return JSONResponse({"error": code, "message": str(exc)}, status_code=status)
 
-    for error_type in (SkillGapError, RecommendationError, ProgressError, DatasetValidationError, StateConflict):
+    for error_type in (SkillGapError, RecommendationError, ProgressError, SimulationError,
+                       DatasetValidationError, StateConflict):
         application.add_exception_handler(error_type, domain_error)
 
     @application.exception_handler(sqlite3.OperationalError)
@@ -148,6 +154,21 @@ def create_app(*, state_path: str | Path | None = None, data_dir: str | Path | N
     def recommendations(employee_id: str, limit: int = Query(3, ge=1, le=3),
                         account: Account = Depends(require_employee_access), repository: DatasetStore = Depends(store)):
         return get_recommendations(repository.snapshot(), employee_id, limit)
+
+    @application.get("/employees/{employee_id}/comparison-options", response_model=RecommendationResult)
+    def comparison_options(employee_id: str, account: Account = Depends(require_employee_access),
+                           repository: DatasetStore = Depends(store)):
+        return get_all_recommendations(repository.snapshot(), employee_id)
+
+    @application.get("/employees/{employee_id}/simulate/{event_id}", response_model=SimulationResult)
+    def simulate(employee_id: str, event_id: str,
+                 account: Account = Depends(require_employee_access), repository: DatasetStore = Depends(store)):
+        return simulate_activity(repository.snapshot(), employee_id, event_id)
+
+    @application.get("/employees/{employee_id}/compare", response_model=ComparisonResult)
+    def compare(employee_id: str, first_event_id: str, second_event_id: str,
+                account: Account = Depends(require_employee_access), repository: DatasetStore = Depends(store)):
+        return compare_activities(repository.snapshot(), employee_id, first_event_id, second_event_id)
 
     @application.get("/events", response_model=list[Activity])
     def events(account: Account = Depends(current_account), repository: DatasetStore = Depends(store)):

@@ -66,8 +66,34 @@ export const handlers = [
 
   http.get(url('/employees/:id/recommendations'), async ({ params, request }) => {
     const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
-    await delay(700) // имитируем работу scoring + LLM
+    await delay(700) // имитируем расчёт рекомендаций и объяснений
     return HttpResponse.json(engine.getRecommendations(params.id as string))
+  }),
+
+  http.get(url('/employees/:id/comparison-options'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
+    await delay(200)
+    const options = engine.getComparisonOptions(params.id as string)
+    return options ? HttpResponse.json(options) : notFound()
+  }),
+
+  http.get(url('/employees/:id/simulate/:eventId'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
+    await delay(250)
+    const result = engine.simulateActivity(params.id as string, params.eventId as string)
+    return result ? HttpResponse.json(result) : notFound()
+  }),
+
+  http.get(url('/employees/:id/compare'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
+    await delay(250)
+    const search = new URL(request.url).searchParams
+    const result = engine.compareActivities(
+      params.id as string,
+      search.get('first_event_id') ?? '',
+      search.get('second_event_id') ?? '',
+    )
+    return result ? HttpResponse.json(result) : notFound()
   }),
 
   http.get(url('/employees/:id/history'), async ({ params, request }) => {

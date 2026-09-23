@@ -46,11 +46,15 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
     }
   }
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}))
+    const body = await res.json().catch(() => ({})) as { detail?: unknown; message?: unknown }
     // Токен недействителен — сбрасываем сессию, охрана маршрутов отправит на /login
     if (res.status === 401 && token && !path.startsWith('/auth/')) setSession(null)
-    const message = body.message ?? (typeof body.detail === 'string' ? body.detail : body.detail?.message)
-    throw new ApiError(res.status, message ?? `Ошибка ${res.status}`)
+    const nestedDetail = typeof body.detail === 'object' && body.detail !== null && 'message' in body.detail
+      ? body.detail.message : undefined
+    const message = typeof body.message === 'string' ? body.message
+      : typeof body.detail === 'string' ? body.detail
+        : typeof nestedDetail === 'string' ? nestedDetail : `Ошибка ${res.status}`
+    throw new ApiError(res.status, message)
   }
   return res.json() as Promise<T>
 }

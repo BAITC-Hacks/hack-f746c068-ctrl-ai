@@ -4,7 +4,9 @@
 // На реальном API всё это считает бэкенд, фронт только отображает.
 // ============================================================
 import type {
-  EmployeeShort, Gap, HistoryItem, HrStats, Profile, ProgressResult, Recommendation, ScoreFactor,
+  ActivityComparison, ActivitySimulation, DecisionGaps, DecisionReadiness,
+  DecisionRecommendation, DecisionRecommendations, EmployeeShort, Gap, HistoryItem,
+  HrStats, Profile, ProgressResult, Recommendation, ScoreFactor,
 } from '../../types'
 import { activities, type MockActivity } from './data/events'
 import { employeesSeed, type MockEmployee } from './data/employees'
@@ -37,6 +39,7 @@ const FACTOR_NAMES: Record<keyof typeof WEIGHTS, string> = {
 const getEmp = (id: string) => db.find((e) => e.id === id)
 const getAct = (id: string) => activities.find((a) => a.id === id)!
 const round = (n: number) => Math.round(n * 100) / 100
+const applyGain = (before: number, act: MockActivity) => Math.max(before, Math.min(before + act.gain, act.maxLevel))
 
 function requirements(emp: MockEmployee) {
   const next = nextGradeOf(emp.grade)
@@ -118,7 +121,7 @@ function recommend(emp: MockEmployee, limit = 3): Recommendation[] {
       explanation: explain(emp, act, g, after, readiness, rAfter, completedSameType),
     })
   }
-  return recs.sort((a, b) => b.score - a.score).slice(0, limit)
+  return recs.sort((a, b) => b.score - a.score || a.activityId.localeCompare(b.activityId)).slice(0, limit)
 }
 
 // ---------------- Публичные функции (ответы «API») ----------------
@@ -150,6 +153,149 @@ export function getRecommendations(id: string): Recommendation[] {
   return e ? recommend(e) : []
 }
 
+// Адаптер новых ответов FastAPI для самостоятельного демо. Старый мок скоринга
+// остаётся источником score; backend-поля decomposition здесь нейтральные,
+// поэтому UI в mock mode показывает исходные факторы карточек, а не их.
+function decisionReadiness(emp: MockEmployee): DecisionReadiness {
+  const req = requirements(emp)
+  const target = nextGradeOf(emp.grade)
+  const percent = calcReadiness(emp.skills, req)
+  return {
+    employee_id: emp.id, role: emp.role, current_grade: emp.grade, target_grade: target,
+    status: target ? 'calculated' : 'top_grade',
+    readiness_percent: target ? percent : null,
+    mandatory_readiness_percent: target ? percent : null,
+    meets_mandatory: target ? Object.entries(req).every(([skill, required]) => (emp.skills[skill] ?? 0) >= required) : null,
+    skills: Object.fromEntries(Object.entries(req).map(([skill, required]) => {
+      const current = emp.skills[skill] ?? 0
+      return [skill, {
+        current, required, progress_percent: Math.min(current / required, 1) * 100,
+        importance: 1, mandatory: true, fulfilled: current >= required,
+      }]
+    })),
+  }
+}
+
+function decisionGaps(emp: MockEmployee): DecisionGaps {
+  const req = requirements(emp)
+  const target = nextGradeOf(emp.grade)
+  const gaps: DecisionGaps['gaps'] = Object.fromEntries(Object.entries(req).map(([skill, required]) => {
+    const current = emp.skills[skill] ?? 0
+    const gap = Math.max(required - current, 0)
+    return [skill, {
+      current, required, gap, normalized_gap: gap / required,
+      importance: 1, weighted_gap: gap / required,
+      mandatory: true, fulfilled: gap === 0,
+    }]
+  }))
+  const count = Object.values(gaps).filter((g) => g.gap > 0).length
+  return {
+    employee_id: emp.id, role: emp.role, current_grade: emp.grade, target_grade: target,
+    status: target ? 'calculated' : 'top_grade',
+    total_target_skills: Object.keys(gaps).length,
+    fulfilled_target_skills: Object.keys(gaps).length - count,
+    skills_with_gap: count, mandatory_skills_with_gap: count, gaps,
+  }
+}
+
+function decisionRecommendation(emp: MockEmployee, rec: Recommendation): DecisionRecommendation {
+  const req = requirements(emp)
+  const required = req[rec.skill] ?? Math.max(rec.currentLevel, 1)
+  const gap = Math.max(required - rec.currentLevel, 0)
+  const projected = applyGain(rec.currentLevel, {
+    id: rec.activityId, title: rec.title, type: rec.type, skill: rec.skill,
+    gain: rec.gain, maxLevel: rec.maxLevel, durationHours: rec.durationHours, audience: 'all',
+  })
+  const gapReduction = Math.min(gap, projected - rec.currentLevel)
+  const related = emp.history.filter((h) => activities.find((a) => a.id === h.activityId)?.skill === rec.skill)
+  return {
+    event_id: rec.activityId, title: rec.title, score: rec.score,
+    grade_gap_benefit: rec.score, history_multiplier: 1,
+    skill_impact: [{
+      skill_id: rec.skill, current: rec.currentLevel, required, gap, gain: rec.gain,
+      max_level: rec.maxLevel, projected, projected_gap: gap - gapReduction,
+      gap_reduction: gapReduction, importance: 1, mandatory: true,
+      weighted_gap_reduction: gapReduction / required, mandatory_factor: 1,
+      benefit: gapReduction / required,
+    }],
+    participation: {
+      completed: related.filter((h) => h.status === 'completed').length,
+      skipped: related.filter((h) => h.status === 'skipped').length,
+      declined: related.filter((h) => h.status === 'declined').length,
+      same_event_completed: related.filter((h) => h.activityId === rec.activityId && h.status === 'completed').length,
+    },
+    explanation: rec.explanation,
+  }
+}
+
+function decisionRecommendations(emp: MockEmployee, limit = 3): DecisionRecommendations {
+  const recs = recommend(emp, limit)
+  const target = nextGradeOf(emp.grade)
+  return {
+    employee_id: emp.id, role: emp.role, current_grade: emp.grade, target_grade: target,
+    status: target ? (recs.length ? 'recommended' : calcGaps(emp).length ? 'no_matching_activity' : 'no_skill_gaps') : 'top_grade',
+    recommendations: recs.map((rec) => decisionRecommendation(emp, rec)),
+  }
+}
+
+export function getComparisonOptions(empId: string): DecisionRecommendations | null {
+  const employee = getEmp(empId)
+  return employee ? decisionRecommendations(employee, activities.length) : null
+}
+
+export function simulateActivity(empId: string, actId: string): ActivitySimulation | null {
+  const employee = getEmp(empId)
+  const act = activities.find((a) => a.id === actId)
+  if (!employee || !act || (act.audience !== 'all' && !act.audience.includes(employee.role))) return null
+  const before = employee.skills[act.skill] ?? 0
+  const after = applyGain(before, act)
+  const simulated = structuredClone(employee)
+  simulated.skills[act.skill] = after
+  simulated.history.push({ activityId: actId, status: 'completed', date: new Date().toISOString(), delta: { before, after } })
+  return {
+    employee_id: empId, event_id: actId, title: act.title, target_grade: nextGradeOf(employee.grade),
+    skill_changes: [{ skill_id: act.skill, before, after, gain: act.gain, max_level: act.maxLevel, applied_gain: after - before }],
+    readiness_before: decisionReadiness(employee), readiness_after: decisionReadiness(simulated),
+    gaps_before: decisionGaps(employee), gaps_after: decisionGaps(simulated),
+    recommendations_after: decisionRecommendations(simulated),
+  }
+}
+
+export function compareActivities(empId: string, firstEventId: string, secondEventId: string): ActivityComparison | null {
+  const employee = getEmp(empId)
+  if (!employee || firstEventId === secondEventId) return null
+  const candidates = recommend(employee, activities.length)
+  const first = candidates.find((rec) => rec.activityId === firstEventId)
+  const second = candidates.find((rec) => rec.activityId === secondEventId)
+  const firstPreview = simulateActivity(empId, firstEventId)
+  const secondPreview = simulateActivity(empId, secondEventId)
+  if (!first || !second || !firstPreview || !secondPreview) return null
+  const preferred = first.score === second.score
+    ? (first.activityId.localeCompare(second.activityId) <= 0 ? first : second)
+    : (first.score > second.score ? first : second)
+  const delta = Math.abs(first.score - second.score)
+  const differences = first.factors.map((factor) => {
+    const other = second.factors.find((item) => item.key === factor.key)
+    const firstContribution = factor.weight * factor.value
+    const secondContribution = other ? other.weight * other.value : 0
+    return { name: factor.name, firstContribution, secondContribution, difference: Math.abs(firstContribution - secondContribution) }
+  }).sort((a, b) => b.difference - a.difference).slice(0, 2)
+  const factorExplanation = differences.map((factor) =>
+    `${factor.name}: ${factor.firstContribution.toFixed(2)} против ${factor.secondContribution.toFixed(2)}`,
+  ).join('; ')
+  return {
+    employee_id: empId, target_grade: nextGradeOf(employee.grade),
+    first: decisionRecommendation(employee, first),
+    second: decisionRecommendation(employee, second),
+    preferred_event_id: preferred.activityId, score_delta: delta,
+    explanation: delta === 0
+      ? `В демо-скоринге обе активности получили одинаковый score ${Math.round(first.score * 100)} из 100. Наибольшие различия во вкладах факторов (шкала 0–1): ${factorExplanation}. При равенстве технический порядок задан ID активности; сотрудник может выбрать любую из них.`
+      : `В демо-скоринге «${preferred.title}» получила ${Math.round(preferred.score * 100)} из 100, альтернативная активность — ${Math.round((preferred === first ? second.score : first.score) * 100)} из 100. Наибольшие различия во вкладах факторов (шкала 0–1): ${factorExplanation}.`,
+    readiness_after_first: firstPreview.readiness_after,
+    readiness_after_second: secondPreview.readiness_after,
+  }
+}
+
 export function getHistory(id: string): HistoryItem[] {
   const e = getEmp(id)
   if (!e) return []
@@ -167,7 +313,7 @@ export function completeActivity(empId: string, actId: string): ProgressResult |
   if (!e || !act) return null
   const req = requirements(e)
   const before = e.skills[act.skill] ?? 0
-  const after = Math.min(before + act.gain, act.maxLevel) // new_skill = min(old + gain, max_level)
+  const after = applyGain(before, act) // cap не должен понижать уже достигнутый уровень
   const readinessBefore = calcReadiness(e.skills, req)
   e.skills[act.skill] = after
   e.history.push({ activityId: actId, status: 'completed', date: new Date().toISOString(), delta: { before, after } })

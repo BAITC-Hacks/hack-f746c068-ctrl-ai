@@ -58,15 +58,8 @@ class RecommendationResult(Model):
     recommendations: list[Recommendation]
 
 
-def get_recommendations(dataset: Dataset, employee_id: str, limit: int = 3) -> RecommendationResult:
-    """Rank active, role-eligible activities by projected grade-gap reduction.
-
-    History changes preference, but cannot make an activity with no useful skill
-    gain relevant. The validated input dataset is never changed.
-    """
-    if type(limit) is not int or not 1 <= limit <= 3:
-        raise RecommendationError("invalid_limit", "limit must be an integer from 1 to 3")
-
+def get_all_recommendations(dataset: Dataset, employee_id: str) -> RecommendationResult:
+    """Rank every useful activity with the same scoring used for the top three."""
     gaps = get_employee_skill_gaps(dataset, employee_id)
     common = dict(employee_id=employee_id, role=gaps.role,
                   current_grade=gaps.current_grade, target_grade=gaps.target_grade)
@@ -150,5 +143,17 @@ def get_recommendations(dataset: Dataset, employee_id: str, limit: int = 3) -> R
     candidates.sort(key=lambda item: (-item.score, item.event_id))
     return RecommendationResult(
         **common, status="recommended" if candidates else "no_matching_activity",
-        recommendations=candidates[:limit],
+        recommendations=candidates,
     )
+
+
+def get_recommendations(dataset: Dataset, employee_id: str, limit: int = 3) -> RecommendationResult:
+    """Return 1–3 ranked activities without changing the validated dataset.
+
+    History changes preference, but cannot make an activity with no useful skill
+    gain relevant. Comparison uses the same ranking over all eligible activities.
+    """
+    if type(limit) is not int or not 1 <= limit <= 3:
+        raise RecommendationError("invalid_limit", "limit must be an integer from 1 to 3")
+    ranked = get_all_recommendations(dataset, employee_id)
+    return ranked.model_copy(update={"recommendations": ranked.recommendations[:limit]})

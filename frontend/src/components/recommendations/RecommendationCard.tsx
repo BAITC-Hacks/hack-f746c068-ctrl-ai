@@ -10,13 +10,14 @@ interface Props {
   busy: 'complete' | 'skip' | 'decline' | null
   disabled: boolean
   onComplete: () => void
+  onPreview: () => void
   onSkip: () => void
   onDecline: () => void
 }
 
-export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSkip, onDecline }: Props) {
+export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onPreview, onSkip, onDecline }: Props) {
   const [open, setOpen] = useState(rank === 1)
-  const after = Math.min(rec.currentLevel + rec.gain, rec.maxLevel)
+  const after = Math.max(rec.currentLevel, Math.min(rec.currentLevel + rec.gain, rec.maxLevel))
   const capped = rec.currentLevel + rec.gain > rec.maxLevel
 
   return (
@@ -60,7 +61,7 @@ export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSk
           </div>
 
           <div className="mt-4 rounded-2xl bg-brand-500/[0.07] p-4 ring-1 ring-brand-500/15">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-700">Почему это подходит · AI</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-700">Почему это подходит</p>
             <p className="text-sm leading-relaxed text-slate-700">{rec.explanation}</p>
           </div>
 
@@ -70,6 +71,7 @@ export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSk
           {open && <div className="mt-3"><ScoreBreakdown factors={rec.factors} score={rec.score} /></div>}
 
           <div className="mt-4 flex flex-wrap gap-2">
+            <Button variant="ghost" onClick={onPreview} disabled={disabled}>Что будет, если…</Button>
             <Button onClick={onComplete} loading={busy === 'complete'} disabled={disabled}>Выполнить активность</Button>
             <Button variant="ghost" onClick={onSkip} loading={busy === 'skip'} disabled={disabled}>Пропустить</Button>
             <Button variant="danger" onClick={onDecline} loading={busy === 'decline'} disabled={disabled}>Отказаться</Button>
