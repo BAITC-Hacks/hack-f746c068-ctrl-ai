@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "HistoryRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "employee_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Employee Id",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "invited",
+            "enrolled",
+            "completed",
+            "skipped",
+            "declined"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "event_date": {
+          "format": "date",
+          "title": "Event Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "employee_id",
+        "event_id",
+        "status",
+        "event_date"
+      ],
+      "title": "HistoryRecord",
+      "type": "object"
+    }
+  },
+  "items": {
+    "$ref": "#/$defs/HistoryRecord"
+  },
+  "type": "array",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,65 @@
+{
+  "$defs": {
+    "Employee": {
+      "additionalProperties": false,
+      "properties": {
+        "employee_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Employee Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "grade": {
+          "minLength": 1,
+          "title": "Grade",
+          "type": "string"
+        },
+        "tenure_months": {
+          "minimum": 0,
+          "title": "Tenure Months",
+          "type": "integer"
+        },
+        "skills": {
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+$": {
+              "maximum": 5,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Skills",
+          "type": "object"
+        }
+      },
+      "required": [
+        "employee_id",
+        "name",
+        "role",
+        "grade",
+        "tenure_months",
+        "skills"
+      ],
+      "title": "Employee",
+      "type": "object"
+    }
+  },
+  "items": {
+    "$ref": "#/$defs/Employee"
+  },
+  "minItems": 1,
+  "type": "array",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

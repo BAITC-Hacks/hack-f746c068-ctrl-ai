@@ -1,0 +1,779 @@
+[
+  {
+    "employee_id": "E001",
+    "name": "Demo Employee 001",
+    "role": "Backend Engineer",
+    "grade": "Middle",
+    "tenure_months": 87,
+    "skills": {
+      "SK_PYTHON": 3,
+      "SK_SYSTEM_DESIGN": 2,
+      "SK_SQL": 4,
+      "SK_TESTING": 4,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 1
+    }
+  },
+  {
+    "employee_id": "E002",
+    "name": "Demo Employee 002",
+    "role": "Frontend Engineer",
+    "grade": "Middle",
+    "tenure_months": 65,
+    "skills": {}
+  },
+  {
+    "employee_id": "E003",
+    "name": "Demo Employee 003",
+    "role": "Data Analyst",
+    "grade": "Middle",
+    "tenure_months": 21,
+    "skills": {
+      "SK_ACCESSIBILITY": 5,
+      "SK_ANALYTICS": 5,
+      "SK_COMMUNICATION": 5,
+      "SK_DISCOVERY": 5,
+      "SK_JAVASCRIPT": 5,
+      "SK_LEADERSHIP": 5,
+      "SK_PRIORITIZATION": 5,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_PYTHON": 5,
+      "SK_REACT": 5,
+      "SK_SQL": 5,
+      "SK_STATISTICS": 5,
+      "SK_STRATEGY": 5,
+      "SK_SYSTEM_DESIGN": 5,
+      "SK_TESTING": 5,
+      "SK_VISUALIZATION": 5
+    }
+  },
+  {
+    "employee_id": "E004",
+    "name": "Demo Employee 004",
+    "role": "Product Manager",
+    "grade": "Lead",
+    "tenure_months": 12,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 2,
+      "SK_ANALYTICS": 2,
+      "SK_STRATEGY": 1,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 0
+    }
+  },
+  {
+    "employee_id": "E005",
+    "name": "Demo Employee 005",
+    "role": "Backend Engineer",
+    "grade": "Middle",
+    "tenure_months": 69,
+    "skills": {
+      "SK_ACCESSIBILITY": 5,
+      "SK_ANALYTICS": 5,
+      "SK_COMMUNICATION": 5,
+      "SK_DISCOVERY": 5,
+      "SK_JAVASCRIPT": 5,
+      "SK_LEADERSHIP": 5,
+      "SK_PRIORITIZATION": 5,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_PYTHON": 5,
+      "SK_REACT": 5,
+      "SK_SQL": 5,
+      "SK_STATISTICS": 5,
+      "SK_STRATEGY": 5,
+      "SK_SYSTEM_DESIGN": 5,
+      "SK_TESTING": 0,
+      "SK_VISUALIZATION": 5
+    }
+  },
+  {
+    "employee_id": "E006",
+    "name": "Demo Employee 006",
+    "role": "Frontend Engineer",
+    "grade": "Middle",
+    "tenure_months": 6,
+    "skills": {
+      "SK_JAVASCRIPT": 1,
+      "SK_REACT": 4,
+      "SK_ACCESSIBILITY": 1,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E007",
+    "name": "Demo Employee 007",
+    "role": "Data Analyst",
+    "grade": "Middle",
+    "tenure_months": 59,
+    "skills": {
+      "SK_SQL": 2,
+      "SK_STATISTICS": 3,
+      "SK_VISUALIZATION": 1,
+      "SK_PYTHON": 2,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E008",
+    "name": "Demo Employee 008",
+    "role": "Product Manager",
+    "grade": "Middle",
+    "tenure_months": 78,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 2,
+      "SK_ANALYTICS": 3,
+      "SK_STRATEGY": 3,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E009",
+    "name": "Demo Employee 009",
+    "role": "Backend Engineer",
+    "grade": "Senior",
+    "tenure_months": 88,
+    "skills": {
+      "SK_PYTHON": 3,
+      "SK_SYSTEM_DESIGN": 3,
+      "SK_SQL": 3,
+      "SK_TESTING": 5,
+      "SK_COMMUNICATION": 5,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E010",
+    "name": "Demo Employee 010",
+    "role": "Frontend Engineer",
+    "grade": "Senior",
+    "tenure_months": 9,
+    "skills": {
+      "SK_JAVASCRIPT": 4,
+      "SK_REACT": 2,
+      "SK_ACCESSIBILITY": 3,
+      "SK_TESTING": 2,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 4
+    }
+  },
+  {
+    "employee_id": "E011",
+    "name": "Demo Employee 011",
+    "role": "Data Analyst",
+    "grade": "Senior",
+    "tenure_months": 34,
+    "skills": {
+      "SK_SQL": 3,
+      "SK_STATISTICS": 4,
+      "SK_VISUALIZATION": 3,
+      "SK_PYTHON": 5,
+      "SK_COMMUNICATION": 5,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E012",
+    "name": "Demo Employee 012",
+    "role": "Product Manager",
+    "grade": "Senior",
+    "tenure_months": 18,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 3,
+      "SK_ANALYTICS": 4,
+      "SK_STRATEGY": 5,
+      "SK_COMMUNICATION": 5,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E013",
+    "name": "Demo Employee 013",
+    "role": "Backend Engineer",
+    "grade": "Lead",
+    "tenure_months": 21,
+    "skills": {
+      "SK_PYTHON": 5,
+      "SK_SYSTEM_DESIGN": 4,
+      "SK_SQL": 3,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E014",
+    "name": "Demo Employee 014",
+    "role": "Frontend Engineer",
+    "grade": "Lead",
+    "tenure_months": 60,
+    "skills": {
+      "SK_JAVASCRIPT": 5,
+      "SK_REACT": 4,
+      "SK_ACCESSIBILITY": 5,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E015",
+    "name": "Demo Employee 015",
+    "role": "Data Analyst",
+    "grade": "Lead",
+    "tenure_months": 88,
+    "skills": {
+      "SK_SQL": 5,
+      "SK_STATISTICS": 4,
+      "SK_VISUALIZATION": 5,
+      "SK_PYTHON": 3,
+      "SK_COMMUNICATION": 5,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E016",
+    "name": "Demo Employee 016",
+    "role": "Product Manager",
+    "grade": "Lead",
+    "tenure_months": 21,
+    "skills": {
+      "SK_DISCOVERY": 5,
+      "SK_PRIORITIZATION": 4,
+      "SK_ANALYTICS": 5,
+      "SK_STRATEGY": 4,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 4
+    }
+  },
+  {
+    "employee_id": "E017",
+    "name": "Demo Employee 017",
+    "role": "Backend Engineer",
+    "grade": "Junior",
+    "tenure_months": 20,
+    "skills": {
+      "SK_PYTHON": 3,
+      "SK_SYSTEM_DESIGN": 0,
+      "SK_SQL": 2,
+      "SK_TESTING": 1,
+      "SK_COMMUNICATION": 0,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E018",
+    "name": "Demo Employee 018",
+    "role": "Frontend Engineer",
+    "grade": "Junior",
+    "tenure_months": 47,
+    "skills": {
+      "SK_JAVASCRIPT": 2,
+      "SK_REACT": 1,
+      "SK_ACCESSIBILITY": 0,
+      "SK_TESTING": 2,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 0,
+      "SK_LEADERSHIP": 0
+    }
+  },
+  {
+    "employee_id": "E019",
+    "name": "Demo Employee 019",
+    "role": "Data Analyst",
+    "grade": "Junior",
+    "tenure_months": 9,
+    "skills": {
+      "SK_SQL": 2,
+      "SK_STATISTICS": 1,
+      "SK_VISUALIZATION": 0,
+      "SK_PYTHON": 1,
+      "SK_COMMUNICATION": 0,
+      "SK_PUBLIC_SPEAKING": 0,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E020",
+    "name": "Demo Employee 020",
+    "role": "Product Manager",
+    "grade": "Junior",
+    "tenure_months": 70,
+    "skills": {
+      "SK_DISCOVERY": 1,
+      "SK_PRIORITIZATION": 1,
+      "SK_ANALYTICS": 3,
+      "SK_STRATEGY": 1,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E021",
+    "name": "Demo Employee 021",
+    "role": "Backend Engineer",
+    "grade": "Middle",
+    "tenure_months": 32,
+    "skills": {
+      "SK_PYTHON": 2,
+      "SK_SYSTEM_DESIGN": 3,
+      "SK_SQL": 4,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E022",
+    "name": "Demo Employee 022",
+    "role": "Frontend Engineer",
+    "grade": "Middle",
+    "tenure_months": 10,
+    "skills": {
+      "SK_JAVASCRIPT": 2,
+      "SK_REACT": 1,
+      "SK_ACCESSIBILITY": 3,
+      "SK_TESTING": 1,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 1
+    }
+  },
+  {
+    "employee_id": "E023",
+    "name": "Demo Employee 023",
+    "role": "Data Analyst",
+    "grade": "Middle",
+    "tenure_months": 36,
+    "skills": {
+      "SK_SQL": 1,
+      "SK_STATISTICS": 2,
+      "SK_VISUALIZATION": 1,
+      "SK_PYTHON": 1,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 1,
+      "SK_LEADERSHIP": 2
+    }
+  },
+  {
+    "employee_id": "E024",
+    "name": "Demo Employee 024",
+    "role": "Product Manager",
+    "grade": "Middle",
+    "tenure_months": 25,
+    "skills": {
+      "SK_DISCOVERY": 4,
+      "SK_PRIORITIZATION": 2,
+      "SK_ANALYTICS": 2,
+      "SK_STRATEGY": 4,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 4
+    }
+  },
+  {
+    "employee_id": "E025",
+    "name": "Demo Employee 025",
+    "role": "Backend Engineer",
+    "grade": "Senior",
+    "tenure_months": 94,
+    "skills": {
+      "SK_PYTHON": 2,
+      "SK_SYSTEM_DESIGN": 2,
+      "SK_SQL": 5,
+      "SK_TESTING": 4,
+      "SK_COMMUNICATION": 5,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E026",
+    "name": "Demo Employee 026",
+    "role": "Frontend Engineer",
+    "grade": "Senior",
+    "tenure_months": 25,
+    "skills": {
+      "SK_JAVASCRIPT": 2,
+      "SK_REACT": 2,
+      "SK_ACCESSIBILITY": 2,
+      "SK_TESTING": 5,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E027",
+    "name": "Demo Employee 027",
+    "role": "Data Analyst",
+    "grade": "Senior",
+    "tenure_months": 32,
+    "skills": {
+      "SK_SQL": 3,
+      "SK_STATISTICS": 5,
+      "SK_VISUALIZATION": 3,
+      "SK_PYTHON": 5,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E028",
+    "name": "Demo Employee 028",
+    "role": "Product Manager",
+    "grade": "Senior",
+    "tenure_months": 22,
+    "skills": {
+      "SK_DISCOVERY": 2,
+      "SK_PRIORITIZATION": 5,
+      "SK_ANALYTICS": 2,
+      "SK_STRATEGY": 2,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E029",
+    "name": "Demo Employee 029",
+    "role": "Backend Engineer",
+    "grade": "Lead",
+    "tenure_months": 49,
+    "skills": {
+      "SK_PYTHON": 4,
+      "SK_SYSTEM_DESIGN": 4,
+      "SK_SQL": 4,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E030",
+    "name": "Demo Employee 030",
+    "role": "Frontend Engineer",
+    "grade": "Lead",
+    "tenure_months": 94,
+    "skills": {
+      "SK_JAVASCRIPT": 3,
+      "SK_REACT": 4,
+      "SK_ACCESSIBILITY": 4,
+      "SK_TESTING": 4,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E031",
+    "name": "Demo Employee 031",
+    "role": "Data Analyst",
+    "grade": "Lead",
+    "tenure_months": 28,
+    "skills": {
+      "SK_SQL": 5,
+      "SK_STATISTICS": 5,
+      "SK_VISUALIZATION": 5,
+      "SK_PYTHON": 4,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 4
+    }
+  },
+  {
+    "employee_id": "E032",
+    "name": "Demo Employee 032",
+    "role": "Product Manager",
+    "grade": "Lead",
+    "tenure_months": 8,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 5,
+      "SK_ANALYTICS": 5,
+      "SK_STRATEGY": 5,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 4
+    }
+  },
+  {
+    "employee_id": "E033",
+    "name": "Demo Employee 033",
+    "role": "Backend Engineer",
+    "grade": "Junior",
+    "tenure_months": 77,
+    "skills": {
+      "SK_PYTHON": 0,
+      "SK_SYSTEM_DESIGN": 3,
+      "SK_SQL": 1,
+      "SK_TESTING": 0,
+      "SK_COMMUNICATION": 0,
+      "SK_PUBLIC_SPEAKING": 1,
+      "SK_LEADERSHIP": 0
+    }
+  },
+  {
+    "employee_id": "E034",
+    "name": "Demo Employee 034",
+    "role": "Frontend Engineer",
+    "grade": "Junior",
+    "tenure_months": 54,
+    "skills": {
+      "SK_JAVASCRIPT": 0,
+      "SK_REACT": 1,
+      "SK_ACCESSIBILITY": 3,
+      "SK_TESTING": 0,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 0,
+      "SK_LEADERSHIP": 0
+    }
+  },
+  {
+    "employee_id": "E035",
+    "name": "Demo Employee 035",
+    "role": "Data Analyst",
+    "grade": "Junior",
+    "tenure_months": 17,
+    "skills": {
+      "SK_SQL": 2,
+      "SK_STATISTICS": 2,
+      "SK_VISUALIZATION": 1,
+      "SK_PYTHON": 2,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E036",
+    "name": "Demo Employee 036",
+    "role": "Product Manager",
+    "grade": "Junior",
+    "tenure_months": 10,
+    "skills": {
+      "SK_DISCOVERY": 2,
+      "SK_PRIORITIZATION": 3,
+      "SK_ANALYTICS": 2,
+      "SK_STRATEGY": 0,
+      "SK_COMMUNICATION": 0,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 0
+    }
+  },
+  {
+    "employee_id": "E037",
+    "name": "Demo Employee 037",
+    "role": "Backend Engineer",
+    "grade": "Middle",
+    "tenure_months": 37,
+    "skills": {
+      "SK_PYTHON": 2,
+      "SK_SYSTEM_DESIGN": 3,
+      "SK_SQL": 2,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E038",
+    "name": "Demo Employee 038",
+    "role": "Frontend Engineer",
+    "grade": "Middle",
+    "tenure_months": 34,
+    "skills": {
+      "SK_JAVASCRIPT": 2,
+      "SK_REACT": 4,
+      "SK_ACCESSIBILITY": 3,
+      "SK_TESTING": 1,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 1,
+      "SK_LEADERSHIP": 2
+    }
+  },
+  {
+    "employee_id": "E039",
+    "name": "Demo Employee 039",
+    "role": "Data Analyst",
+    "grade": "Middle",
+    "tenure_months": 27,
+    "skills": {
+      "SK_SQL": 1,
+      "SK_STATISTICS": 1,
+      "SK_VISUALIZATION": 2,
+      "SK_PYTHON": 3,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 2,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E040",
+    "name": "Demo Employee 040",
+    "role": "Product Manager",
+    "grade": "Middle",
+    "tenure_months": 6,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 4,
+      "SK_ANALYTICS": 3,
+      "SK_STRATEGY": 1,
+      "SK_COMMUNICATION": 1,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E041",
+    "name": "Demo Employee 041",
+    "role": "Backend Engineer",
+    "grade": "Senior",
+    "tenure_months": 72,
+    "skills": {
+      "SK_PYTHON": 2,
+      "SK_SYSTEM_DESIGN": 4,
+      "SK_SQL": 3,
+      "SK_TESTING": 4,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 5,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E042",
+    "name": "Demo Employee 042",
+    "role": "Frontend Engineer",
+    "grade": "Senior",
+    "tenure_months": 56,
+    "skills": {
+      "SK_JAVASCRIPT": 2,
+      "SK_REACT": 2,
+      "SK_ACCESSIBILITY": 2,
+      "SK_TESTING": 3,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E043",
+    "name": "Demo Employee 043",
+    "role": "Data Analyst",
+    "grade": "Senior",
+    "tenure_months": 88,
+    "skills": {
+      "SK_SQL": 3,
+      "SK_STATISTICS": 2,
+      "SK_VISUALIZATION": 4,
+      "SK_PYTHON": 4,
+      "SK_COMMUNICATION": 2,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E044",
+    "name": "Demo Employee 044",
+    "role": "Product Manager",
+    "grade": "Senior",
+    "tenure_months": 23,
+    "skills": {
+      "SK_DISCOVERY": 3,
+      "SK_PRIORITIZATION": 2,
+      "SK_ANALYTICS": 4,
+      "SK_STRATEGY": 5,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E045",
+    "name": "Demo Employee 045",
+    "role": "Backend Engineer",
+    "grade": "Lead",
+    "tenure_months": 95,
+    "skills": {
+      "SK_PYTHON": 4,
+      "SK_SYSTEM_DESIGN": 3,
+      "SK_SQL": 3,
+      "SK_TESTING": 5,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 5
+    }
+  },
+  {
+    "employee_id": "E046",
+    "name": "Demo Employee 046",
+    "role": "Frontend Engineer",
+    "grade": "Lead",
+    "tenure_months": 61,
+    "skills": {
+      "SK_JAVASCRIPT": 3,
+      "SK_REACT": 4,
+      "SK_ACCESSIBILITY": 3,
+      "SK_TESTING": 5,
+      "SK_COMMUNICATION": 3,
+      "SK_PUBLIC_SPEAKING": 4,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E047",
+    "name": "Demo Employee 047",
+    "role": "Data Analyst",
+    "grade": "Lead",
+    "tenure_months": 4,
+    "skills": {
+      "SK_SQL": 3,
+      "SK_STATISTICS": 3,
+      "SK_VISUALIZATION": 4,
+      "SK_PYTHON": 4,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 3
+    }
+  },
+  {
+    "employee_id": "E048",
+    "name": "Demo Employee 048",
+    "role": "Product Manager",
+    "grade": "Lead",
+    "tenure_months": 45,
+    "skills": {
+      "SK_DISCOVERY": 5,
+      "SK_PRIORITIZATION": 3,
+      "SK_ANALYTICS": 4,
+      "SK_STRATEGY": 4,
+      "SK_COMMUNICATION": 4,
+      "SK_PUBLIC_SPEAKING": 3,
+      "SK_LEADERSHIP": 4
+    }
+  }
+]

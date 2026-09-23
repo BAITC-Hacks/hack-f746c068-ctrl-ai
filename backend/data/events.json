@@ -1,0 +1,491 @@
+[
+  {
+    "event_id": "EV001",
+    "title": "System Design Workshop",
+    "type": "workshop",
+    "category": "architecture",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SYSTEM_DESIGN",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV002",
+    "title": "Architecture Mentoring",
+    "type": "mentoring",
+    "category": "architecture",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SYSTEM_DESIGN",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV003",
+    "title": "Public Speaking Meetup",
+    "type": "meetup",
+    "category": "public_speaking",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PUBLIC_SPEAKING",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV004",
+    "title": "Backend Engineer: Python Course",
+    "type": "course",
+    "category": "python",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PYTHON",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV005",
+    "title": "Backend Engineer: Python Project",
+    "type": "project",
+    "category": "python",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PYTHON",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV006",
+    "title": "Backend Engineer: System Design Course",
+    "type": "course",
+    "category": "system_design",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SYSTEM_DESIGN",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV007",
+    "title": "Backend Engineer: System Design Project",
+    "type": "project",
+    "category": "system_design",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SYSTEM_DESIGN",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV008",
+    "title": "Frontend Engineer: Javascript Course",
+    "type": "course",
+    "category": "javascript",
+    "audience": [
+      "Frontend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_JAVASCRIPT",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV009",
+    "title": "Frontend Engineer: Javascript Project",
+    "type": "project",
+    "category": "javascript",
+    "audience": [
+      "Frontend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_JAVASCRIPT",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV010",
+    "title": "Frontend Engineer: React Course",
+    "type": "course",
+    "category": "react",
+    "audience": [
+      "Frontend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_REACT",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV011",
+    "title": "Frontend Engineer: React Project",
+    "type": "project",
+    "category": "react",
+    "audience": [
+      "Frontend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_REACT",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV012",
+    "title": "Data Analyst: Sql Course",
+    "type": "course",
+    "category": "sql",
+    "audience": [
+      "Data Analyst"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SQL",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV013",
+    "title": "Data Analyst: Sql Project",
+    "type": "project",
+    "category": "sql",
+    "audience": [
+      "Data Analyst"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_SQL",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV014",
+    "title": "Data Analyst: Statistics Course",
+    "type": "course",
+    "category": "statistics",
+    "audience": [
+      "Data Analyst"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_STATISTICS",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV015",
+    "title": "Data Analyst: Statistics Project",
+    "type": "project",
+    "category": "statistics",
+    "audience": [
+      "Data Analyst"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_STATISTICS",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV016",
+    "title": "Product Manager: Discovery Course",
+    "type": "course",
+    "category": "discovery",
+    "audience": [
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_DISCOVERY",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV017",
+    "title": "Product Manager: Discovery Project",
+    "type": "project",
+    "category": "discovery",
+    "audience": [
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_DISCOVERY",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV018",
+    "title": "Product Manager: Prioritization Course",
+    "type": "course",
+    "category": "prioritization",
+    "audience": [
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PRIORITIZATION",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV019",
+    "title": "Product Manager: Prioritization Project",
+    "type": "project",
+    "category": "prioritization",
+    "audience": [
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PRIORITIZATION",
+        "gain": 1,
+        "max_level": 5
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV020",
+    "title": "Communication Workshop",
+    "type": "workshop",
+    "category": "communication",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_COMMUNICATION",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV021",
+    "title": "Communication Mentoring",
+    "type": "mentoring",
+    "category": "communication",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_COMMUNICATION",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV022",
+    "title": "Public Speaking Workshop",
+    "type": "workshop",
+    "category": "public_speaking",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PUBLIC_SPEAKING",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV023",
+    "title": "Public Speaking Mentoring",
+    "type": "mentoring",
+    "category": "public_speaking",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PUBLIC_SPEAKING",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV024",
+    "title": "Leadership Workshop",
+    "type": "workshop",
+    "category": "leadership",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_LEADERSHIP",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV025",
+    "title": "Leadership Mentoring",
+    "type": "mentoring",
+    "category": "leadership",
+    "audience": [
+      "Backend Engineer",
+      "Frontend Engineer",
+      "Data Analyst",
+      "Product Manager"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_LEADERSHIP",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": true
+  },
+  {
+    "event_id": "EV026",
+    "title": "Archived Python Workshop",
+    "type": "workshop",
+    "category": "python",
+    "audience": [
+      "Backend Engineer"
+    ],
+    "skills": [
+      {
+        "skill_id": "SK_PYTHON",
+        "gain": 1,
+        "max_level": 4
+      }
+    ],
+    "duration_hours": 8.0,
+    "active": false
+  }
+]

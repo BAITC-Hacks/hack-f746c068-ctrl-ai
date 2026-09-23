@@ -1,0 +1,679 @@
+{
+  "schema_version": "1.0",
+  "skill_catalog": [
+    {
+      "skill_id": "SK_ACCESSIBILITY",
+      "name": "Accessibility",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_ANALYTICS",
+      "name": "Analytics",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_COMMUNICATION",
+      "name": "Communication",
+      "category": "interpersonal",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_DISCOVERY",
+      "name": "Discovery",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_JAVASCRIPT",
+      "name": "Javascript",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_LEADERSHIP",
+      "name": "Leadership",
+      "category": "interpersonal",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_PRIORITIZATION",
+      "name": "Prioritization",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_PUBLIC_SPEAKING",
+      "name": "Public Speaking",
+      "category": "interpersonal",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_PYTHON",
+      "name": "Python",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_REACT",
+      "name": "React",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_SQL",
+      "name": "Sql",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_STATISTICS",
+      "name": "Statistics",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_STRATEGY",
+      "name": "Strategy",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_SYSTEM_DESIGN",
+      "name": "System Design",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_TESTING",
+      "name": "Testing",
+      "category": "technical",
+      "max_level": 5
+    },
+    {
+      "skill_id": "SK_VISUALIZATION",
+      "name": "Visualization",
+      "category": "technical",
+      "max_level": 5
+    }
+  ],
+  "career_tracks": [
+    {
+      "role": "Backend Engineer",
+      "grades": [
+        "Junior",
+        "Middle",
+        "Senior",
+        "Lead"
+      ],
+      "requirements": {
+        "Junior": {
+          "SK_PYTHON": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SYSTEM_DESIGN": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SQL": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 1,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Middle": {
+          "SK_PYTHON": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SYSTEM_DESIGN": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SQL": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 2,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Senior": {
+          "SK_PYTHON": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SYSTEM_DESIGN": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SQL": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 3,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 2,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Lead": {
+          "SK_PYTHON": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SYSTEM_DESIGN": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_SQL": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 4,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 3,
+            "importance": 0.4,
+            "mandatory": false
+          },
+          "SK_LEADERSHIP": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          }
+        }
+      }
+    },
+    {
+      "role": "Frontend Engineer",
+      "grades": [
+        "Junior",
+        "Middle",
+        "Senior",
+        "Lead"
+      ],
+      "requirements": {
+        "Junior": {
+          "SK_JAVASCRIPT": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_REACT": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ACCESSIBILITY": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 1,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Middle": {
+          "SK_JAVASCRIPT": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_REACT": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ACCESSIBILITY": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 2,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Senior": {
+          "SK_JAVASCRIPT": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_REACT": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ACCESSIBILITY": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 3,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 2,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Lead": {
+          "SK_JAVASCRIPT": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_REACT": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ACCESSIBILITY": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_TESTING": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 4,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 3,
+            "importance": 0.4,
+            "mandatory": false
+          },
+          "SK_LEADERSHIP": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          }
+        }
+      }
+    },
+    {
+      "role": "Data Analyst",
+      "grades": [
+        "Junior",
+        "Middle",
+        "Senior",
+        "Lead"
+      ],
+      "requirements": {
+        "Junior": {
+          "SK_SQL": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STATISTICS": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_VISUALIZATION": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PYTHON": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 1,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Middle": {
+          "SK_SQL": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STATISTICS": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_VISUALIZATION": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PYTHON": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 2,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Senior": {
+          "SK_SQL": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STATISTICS": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_VISUALIZATION": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PYTHON": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 3,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 2,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Lead": {
+          "SK_SQL": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STATISTICS": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_VISUALIZATION": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PYTHON": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 4,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 3,
+            "importance": 0.4,
+            "mandatory": false
+          },
+          "SK_LEADERSHIP": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          }
+        }
+      }
+    },
+    {
+      "role": "Product Manager",
+      "grades": [
+        "Junior",
+        "Middle",
+        "Senior",
+        "Lead"
+      ],
+      "requirements": {
+        "Junior": {
+          "SK_DISCOVERY": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PRIORITIZATION": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ANALYTICS": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STRATEGY": {
+            "level": 2,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 1,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Middle": {
+          "SK_DISCOVERY": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PRIORITIZATION": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ANALYTICS": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STRATEGY": {
+            "level": 3,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 2,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 1,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Senior": {
+          "SK_DISCOVERY": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PRIORITIZATION": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ANALYTICS": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STRATEGY": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 3,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 2,
+            "importance": 0.4,
+            "mandatory": false
+          }
+        },
+        "Lead": {
+          "SK_DISCOVERY": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_PRIORITIZATION": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_ANALYTICS": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_STRATEGY": {
+            "level": 5,
+            "importance": 1.0,
+            "mandatory": true
+          },
+          "SK_COMMUNICATION": {
+            "level": 4,
+            "importance": 0.8,
+            "mandatory": true
+          },
+          "SK_PUBLIC_SPEAKING": {
+            "level": 3,
+            "importance": 0.4,
+            "mandatory": false
+          },
+          "SK_LEADERSHIP": {
+            "level": 4,
+            "importance": 1.0,
+            "mandatory": true
+          }
+        }
+      }
+    }
+  ]
+}

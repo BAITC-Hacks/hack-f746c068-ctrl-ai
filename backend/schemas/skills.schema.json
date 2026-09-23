@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "CareerTrack": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "grades": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Grades",
+          "type": "array"
+        },
+        "requirements": {
+          "additionalProperties": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/$defs/Requirement"
+              }
+            },
+            "propertyNames": {
+              "minLength": 1
+            },
+            "type": "object"
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Requirements",
+          "type": "object"
+        }
+      },
+      "required": [
+        "role",
+        "grades",
+        "requirements"
+      ],
+      "title": "CareerTrack",
+      "type": "object"
+    },
+    "Requirement": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "importance": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Importance",
+          "type": "number"
+        },
+        "mandatory": {
+          "default": true,
+          "title": "Mandatory",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "level"
+      ],
+      "title": "Requirement",
+      "type": "object"
+    },
+    "Skill": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Skill Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "technical",
+            "interpersonal"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "max_level": {
+          "default": 5,
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Max Level",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "skill_id",
+        "name",
+        "category"
+      ],
+      "title": "Skill",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "skill_catalog": {
+      "items": {
+        "$ref": "#/$defs/Skill"
+      },
+      "minItems": 1,
+      "title": "Skill Catalog",
+      "type": "array"
+    },
+    "career_tracks": {
+      "items": {
+        "$ref": "#/$defs/CareerTrack"
+      },
+      "minItems": 1,
+      "title": "Career Tracks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "skill_catalog",
+    "career_tracks"
+  ],
+  "title": "SkillsDocument",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

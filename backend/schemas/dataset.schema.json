@@ -1,0 +1,388 @@
+{
+  "$defs": {
+    "Activity": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "workshop",
+            "course",
+            "meetup",
+            "mentoring",
+            "project",
+            "assessment"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "category": {
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        },
+        "audience": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Audience",
+          "type": "array"
+        },
+        "skills": {
+          "items": {
+            "$ref": "#/$defs/ActivityGain"
+          },
+          "minItems": 1,
+          "title": "Skills",
+          "type": "array"
+        },
+        "duration_hours": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Hours",
+          "type": "number"
+        },
+        "active": {
+          "default": true,
+          "title": "Active",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "event_id",
+        "title",
+        "type",
+        "category",
+        "audience",
+        "skills",
+        "duration_hours"
+      ],
+      "title": "Activity",
+      "type": "object"
+    },
+    "ActivityGain": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Skill Id",
+          "type": "string"
+        },
+        "gain": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Gain",
+          "type": "integer"
+        },
+        "max_level": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Max Level",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "skill_id",
+        "gain",
+        "max_level"
+      ],
+      "title": "ActivityGain",
+      "type": "object"
+    },
+    "CareerTrack": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "grades": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Grades",
+          "type": "array"
+        },
+        "requirements": {
+          "additionalProperties": {
+            "patternProperties": {
+              "^[A-Za-z0-9_-]+$": {
+                "$ref": "#/$defs/Requirement"
+              }
+            },
+            "propertyNames": {
+              "minLength": 1
+            },
+            "type": "object"
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Requirements",
+          "type": "object"
+        }
+      },
+      "required": [
+        "role",
+        "grades",
+        "requirements"
+      ],
+      "title": "CareerTrack",
+      "type": "object"
+    },
+    "Employee": {
+      "additionalProperties": false,
+      "properties": {
+        "employee_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Employee Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "grade": {
+          "minLength": 1,
+          "title": "Grade",
+          "type": "string"
+        },
+        "tenure_months": {
+          "minimum": 0,
+          "title": "Tenure Months",
+          "type": "integer"
+        },
+        "skills": {
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+$": {
+              "maximum": 5,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Skills",
+          "type": "object"
+        }
+      },
+      "required": [
+        "employee_id",
+        "name",
+        "role",
+        "grade",
+        "tenure_months",
+        "skills"
+      ],
+      "title": "Employee",
+      "type": "object"
+    },
+    "HistoryRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "employee_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Employee Id",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "invited",
+            "enrolled",
+            "completed",
+            "skipped",
+            "declined"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "event_date": {
+          "format": "date",
+          "title": "Event Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "employee_id",
+        "event_id",
+        "status",
+        "event_date"
+      ],
+      "title": "HistoryRecord",
+      "type": "object"
+    },
+    "Requirement": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "importance": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Importance",
+          "type": "number"
+        },
+        "mandatory": {
+          "default": true,
+          "title": "Mandatory",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "level"
+      ],
+      "title": "Requirement",
+      "type": "object"
+    },
+    "Skill": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Skill Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "technical",
+            "interpersonal"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "max_level": {
+          "default": 5,
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Max Level",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "skill_id",
+        "name",
+        "category"
+      ],
+      "title": "Skill",
+      "type": "object"
+    },
+    "SkillsDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "skill_catalog": {
+          "items": {
+            "$ref": "#/$defs/Skill"
+          },
+          "minItems": 1,
+          "title": "Skill Catalog",
+          "type": "array"
+        },
+        "career_tracks": {
+          "items": {
+            "$ref": "#/$defs/CareerTrack"
+          },
+          "minItems": 1,
+          "title": "Career Tracks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "skill_catalog",
+        "career_tracks"
+      ],
+      "title": "SkillsDocument",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "employees": {
+      "items": {
+        "$ref": "#/$defs/Employee"
+      },
+      "minItems": 1,
+      "title": "Employees",
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/Activity"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "skills": {
+      "$ref": "#/$defs/SkillsDocument"
+    },
+    "activity_history": {
+      "items": {
+        "$ref": "#/$defs/HistoryRecord"
+      },
+      "title": "Activity History",
+      "type": "array"
+    }
+  },
+  "required": [
+    "employees",
+    "events",
+    "skills",
+    "activity_history"
+  ],
+  "title": "Dataset",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "Activity": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "workshop",
+            "course",
+            "meetup",
+            "mentoring",
+            "project",
+            "assessment"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "category": {
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        },
+        "audience": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Audience",
+          "type": "array"
+        },
+        "skills": {
+          "items": {
+            "$ref": "#/$defs/ActivityGain"
+          },
+          "minItems": 1,
+          "title": "Skills",
+          "type": "array"
+        },
+        "duration_hours": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Hours",
+          "type": "number"
+        },
+        "active": {
+          "default": true,
+          "title": "Active",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "event_id",
+        "title",
+        "type",
+        "category",
+        "audience",
+        "skills",
+        "duration_hours"
+      ],
+      "title": "Activity",
+      "type": "object"
+    },
+    "ActivityGain": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Skill Id",
+          "type": "string"
+        },
+        "gain": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Gain",
+          "type": "integer"
+        },
+        "max_level": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Max Level",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "skill_id",
+        "gain",
+        "max_level"
+      ],
+      "title": "ActivityGain",
+      "type": "object"
+    }
+  },
+  "items": {
+    "$ref": "#/$defs/Activity"
+  },
+  "type": "array",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
