@@ -4,7 +4,8 @@
 // Если бэкенд меняет формат — меняем здесь и в моках.
 // ============================================================
 
-export type Grade = 'Junior' | 'Middle' | 'Senior' | 'Lead'
+// Импортированный датасет может содержать собственные названия грейдов.
+export type Grade = string
 
 export interface EmployeeShort {
   id: string
@@ -48,11 +49,29 @@ export interface Profile {
 export interface ScoreFactor {
   key: string
   name: string // человекочитаемое название фактора
-  weight: number // вес фактора в формуле, 0..1
+  weight: number // вес/коэффициент фактора в формуле
   value: number // значение фактора для этой активности, 0..1
 }
 
-export type ActivityType = 'course' | 'mentoring' | 'project' | 'workshop' | 'certification'
+export type ActivityType =
+  | 'course'
+  | 'mentoring'
+  | 'project'
+  | 'workshop'
+  | 'certification'
+  | 'meetup'
+  | 'assessment'
+
+export interface RecommendationImpact {
+  skill: string
+  current: number
+  required: number
+  gain: number
+  maxLevel: number
+  projected: number
+  gapReduction: number
+  mandatory: boolean
+}
 
 export interface Recommendation {
   activityId: string
@@ -63,13 +82,16 @@ export interface Recommendation {
   maxLevel: number
   currentLevel: number
   durationHours: number
-  score: number // 0..1, итоговый score
+  score: number // итоговый score; реальный backend не нормализует его к 0..1
   factors: ScoreFactor[]
   explanation: string // текст от LLM
   readinessAfter: number // готовность после выполнения, 0..100
+  impacts?: RecommendationImpact[]
+  gradeGapBenefit?: number
+  historyMultiplier?: number
 }
 
-export type ActivityStatus = 'completed' | 'skipped' | 'declined'
+export type ActivityStatus = 'invited' | 'enrolled' | 'completed' | 'skipped' | 'declined'
 
 export interface HistoryItem {
   activityId: string
@@ -80,14 +102,18 @@ export interface HistoryItem {
   delta?: { before: number; after: number }
 }
 
-export interface ProgressResult {
+export interface ProgressSkillChange {
   skill: string
   before: number
   after: number
   maxLevel: number
   gain: number
-  readinessBefore: number
-  readinessAfter: number
+}
+
+export interface ProgressResult {
+  changes: ProgressSkillChange[]
+  readinessBefore: number | null
+  readinessAfter: number | null
   gradeUnlocked: boolean
   newRecommendations: Recommendation[]
 }
@@ -213,9 +239,16 @@ export interface ActivityComparison {
 
 export interface HrStats {
   totalEmployees: number
-  avgReadiness: number
+  avgReadiness: number | null
   topGaps: { skill: string; employees: number; avgGap: number }[]
   statusCounts: Record<ActivityStatus, number>
   uncovered: { id: string; name: string; role: string; department: string; grade: Grade; reason: string }[]
   gapsByRole: { role: string; skill: string; avgGap: number }[]
+  activities: {
+    id: string
+    title: string
+    totalRecords: number
+    uniqueEmployees: number
+    statusCounts: Record<ActivityStatus, number>
+  }[]
 }

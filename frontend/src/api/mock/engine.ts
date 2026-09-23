@@ -319,7 +319,7 @@ export function completeActivity(empId: string, actId: string): ProgressResult |
   e.history.push({ activityId: actId, status: 'completed', date: new Date().toISOString(), delta: { before, after } })
   const readinessAfter = calcReadiness(e.skills, req)
   return {
-    skill: act.skill, before, after, maxLevel: act.maxLevel, gain: act.gain,
+    changes: [{ skill: act.skill, before, after, maxLevel: act.maxLevel, gain: act.gain }],
     readinessBefore, readinessAfter, gradeUnlocked: readinessAfter >= 100,
     newRecommendations: recommend(e),
   }
@@ -335,7 +335,7 @@ export function rejectActivity(empId: string, actId: string, status: 'skipped' |
 export function getHrStats(): HrStats {
   const gapAgg = new Map<string, { employees: number; total: number }>()
   const roleAgg = new Map<string, { total: number; n: number }>()
-  const statusCounts = { completed: 0, skipped: 0, declined: 0 }
+  const statusCounts: HrStats['statusCounts'] = { invited: 0, enrolled: 0, completed: 0, skipped: 0, declined: 0 }
   const uncovered: HrStats['uncovered'] = []
   let readinessSum = 0
 
@@ -372,6 +372,20 @@ export function getHrStats(): HrStats {
     gapsByRole: [...roleAgg.entries()].map(([k, v]) => {
       const [role, skill] = k.split('|')
       return { role, skill, avgGap: round(v.total / v.n) }
+    }),
+    activities: activities.map((activity) => {
+      const participants = db.flatMap((employee) => employee.history
+        .filter((item) => item.activityId === activity.id)
+        .map((item) => ({ employeeId: employee.id, status: item.status })))
+      const counts: HrStats['statusCounts'] = { invited: 0, enrolled: 0, completed: 0, skipped: 0, declined: 0 }
+      participants.forEach((item) => { counts[item.status]++ })
+      return {
+        id: activity.id,
+        title: activity.title,
+        totalRecords: participants.length,
+        uniqueEmployees: new Set(participants.map((item) => item.employeeId)).size,
+        statusCounts: counts,
+      }
     }),
   }
 }

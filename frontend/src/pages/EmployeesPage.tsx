@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import type { EmployeeShort, Grade } from '../types'
+import type { EmployeeShort } from '../types'
 import { useEmployees } from '../hooks/queries'
 import { Avatar, Badge, Card, EmptyState, ErrorState, PageHeader, ProgressBar, Skeleton, cn } from '../components/ui'
 
-const GRADES: Grade[] = ['Junior', 'Middle', 'Senior', 'Lead']
 type SortKey = 'readiness-asc' | 'readiness-desc' | 'name'
 
 const sorters: Record<SortKey, (a: EmployeeShort, b: EmployeeShort) => number> = {
@@ -89,6 +88,12 @@ export function EmployeesPage() {
     return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ru'))
   }, [data])
 
+  const grades = useMemo(
+    () => [...new Set((data ?? []).map((e) => e.grade).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, 'ru')),
+    [data],
+  )
+
   const groups = useMemo(() => {
     const needle = q.trim().toLowerCase()
     const filtered = (data ?? []).filter((e) =>
@@ -132,7 +137,7 @@ export function EmployeesPage() {
           />
           <select value={grade} onChange={(e) => setParam('grade', e.target.value)} className="rounded-full border-0 bg-white/80 px-4 py-2.5 text-sm outline-none ring-1 ring-black/5 focus:ring-2 focus:ring-brand-500/50">
             <option value="">Все грейды</option>
-            {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
+            {grades.map((g) => <option key={g} value={g}>{g}</option>)}
           </select>
           <select value={sort} onChange={(e) => setParam('sort', e.target.value)} className="rounded-full border-0 bg-white/80 px-4 py-2.5 text-sm outline-none ring-1 ring-black/5 focus:ring-2 focus:ring-brand-500/50">
             <option value="readiness-asc">Сначала низкая готовность</option>

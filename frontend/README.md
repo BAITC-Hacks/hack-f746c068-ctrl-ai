@@ -14,9 +14,9 @@ React + Vite 6 + TypeScript + Tailwind 3 + TanStack Query + Recharts + MSW.
 - **Рекомендации:** до 3 активностей с итоговым score, разбором факторов (вес × значение = вклад) и объяснением по прозрачным правилам.
 - **Лаборатория выбора:** предпросмотр результата без записи и сравнение с полезными активностями вне топ-3.
 - **Выполнение активности:** окно «было → стало» по формуле `new_skill = max(old, min(old + gain, max_level))`, автоматический пересчёт навыков, готовности и рекомендаций.
-- **История активностей:** выполнено / пропущено / отклонено.
-- **HR-аналитика:** ключевые метрики, топ разрывов, статусы активностей, тепловая карта разрывов по ролям, сотрудники без рекомендаций.
-- **Моковый API (MSW):** работает без бэкенда; полное подключение к FastAPI ещё не завершено.
+- **История активностей:** приглашено / записано / выполнено / пропущено / отклонено.
+- **HR-аналитика:** ключевые метрики, топ разрывов, статусы и участие по активностям, тепловая карта разрывов по ролям, сотрудники без рекомендаций.
+- **Mock и реальный API:** один интерфейс работает с MSW или FastAPI; в реальном режиме используются bearer-токен, маршруты backend и адаптеры его ответов.
 
 ## Вход и роли
 
@@ -33,12 +33,15 @@ React + Vite 6 + TypeScript + Tailwind 3 + TanStack Query + Recharts + MSW.
 | HR-менеджер | `hr@careerquest.kz` |
 | Сотрудник (Иван Петров) | `ivan.petrov@careerquest.kz` |
 
-Зарегистрированные аккаунты и сессия хранятся в `localStorage` браузера (только для демо).
+Зарегистрированные mock-аккаунты и сессия хранятся в `localStorage` браузера.
+В реальном режиме сессия содержит bearer-токен; это допустимо для локального демо,
+но не является схемой хранения токенов для production.
 
-**Реальный API** (`VITE_USE_MOCK=false`): вход по токену доступа из `backend/runtime/access.json`,
-фронт проверяет его через `GET /auth/me` и дальше отправляет заголовок `Authorization: Bearer <token>`.
-Эндпоинтов `/auth/login` и `/auth/register` в бэкенде пока нет — когда появятся, форма заработает с ними
-(контракт — в `src/api/auth.ts`).
+**Реальный API** (`VITE_USE_MOCK=false`): форма принимает токен доступа из
+`backend/runtime/access.json`. Frontend проверяет его через `GET /auth/me`, сохраняет
+сессию и автоматически отправляет `Authorization: Bearer <token>` в следующих
+запросах. Текущий backend не предоставляет `/auth/login` и `/auth/register`, поэтому
+почта, пароль и регистрация доступны только в mock-режиме.
 
 ## Стиль
 
@@ -59,32 +62,44 @@ npm run dev          # http://localhost:5173
 | Переменная | Значение |
 |---|---|
 | `VITE_USE_MOCK=true` | фронт работает на мок-данных (MSW перехватывает запросы), бэкенд не нужен |
-| `VITE_USE_MOCK=false` | запросы направляются на FastAPI по адресу `VITE_API_URL`; полная интеграция пока не завершена |
+| `VITE_USE_MOCK=false` | frontend использует реальные маршруты FastAPI по адресу `VITE_API_URL` и преобразует ответы в модели интерфейса |
 
 После изменения `.env` перезапустите `npm run dev`. В мок-режиме в шапке горит бейдж **Mock API**.
 Состояние моков живёт в памяти — **перезагрузка страницы сбрасывает демо** к исходным данным.
 
-Для FastAPI нужно настроить `CAREER_QUEST_CORS_ORIGINS=http://localhost:5173`
-и передавать bearer-токен. Остальные текущие маршруты/типы frontend ещё не
-совпадают с backend API, поэтому просто переключить `VITE_USE_MOCK=false`
-недостаточно для рабочего интерфейса. Новая лаборатория выбора имеет отдельный
-backend-контракт, но пока демонстрируется в интерфейсе на моковых данных.
+Для реального режима запустите backend с
+`CAREER_QUEST_CORS_ORIGINS=http://localhost:5173`, установите
+`VITE_USE_MOCK=false`, перезапустите `npm run dev` и войдите токеном из
+`backend/runtime/access.json`. Профиль, история, рекомендации, завершение активности,
+лаборатория выбора и HR-аналитика после этого читаются из FastAPI.
 
-## API-контракт
+FastAPI пока не предоставляет маршруты для отметок «пропустить» и «отказаться».
+Эти действия доступны только с `VITE_USE_MOCK=true`; в реальном режиме frontend
+не отправляет `skip`/`decline`. Уже существующие статусы `skipped` и `declined` из
+истории backend по-прежнему отображаются.
 
-Типы — `src/types/index.ts`. Старые моковые типы ещё отличаются от Pydantic-схем;
-типы лаборатории выбора отражают новые ответы backend.
+## API-контракт и адаптеры
 
-```
-GET  /employees                                  → EmployeeShort[]
-GET  /employees/{id}/profile                     → Profile
-GET  /employees/{id}/recommendations             → Recommendation[]
-GET  /employees/{id}/history                     → HistoryItem[]
-POST /employees/{id}/activities/{aid}/complete   → ProgressResult
-POST /employees/{id}/activities/{aid}/skip       → { ok }
-POST /employees/{id}/activities/{aid}/decline    → { ok }
-GET  /hr/stats                                   → HrStats
-```
+Компоненты используют стабильные camelCase-типы из `src/types/index.ts`.
+Mock-обработчики сразу возвращают эти модели, а `src/api/adapters.ts` преобразует
+snake_case-ответы FastAPI и объединённый профиль в те же модели. Выбор маршрута
+сосредоточен в `src/api/endpoints.ts`:
+
+| Данные или действие | Mock (MSW) | Реальный FastAPI |
+|---|---|---|
+| Сотрудники | `GET /employees` | `GET /employees` и профили `GET /employees/{id}` для готовности |
+| Профиль | `GET /employees/{id}/profile` | `GET /employees/{id}` |
+| История | `GET /employees/{id}/history` | поле `history` ответа `GET /employees/{id}` и каталог `GET /events` |
+| Рекомендации | `GET /employees/{id}/recommendations` | `GET /employees/{id}/recommendations` (лимит backend по умолчанию — 3) |
+| Завершение | `POST /employees/{id}/activities/{event_id}/complete` | тот же маршрут с заголовком `Idempotency-Key` |
+| HR-аналитика | `GET /hr/stats` | `GET /hr/dashboard` |
+| Пропуск / отказ | отдельные mock-маршруты | не поддерживаются backend |
+
+Для каждого осознанного нажатия «Выполнить» frontend создаёт UUID v4 через
+`crypto.randomUUID()` (с безопасным fallback на `crypto.getRandomValues()`) и
+передаёт его в `Idempotency-Key`. Один ключ обозначает одну попытку завершения;
+при повторе того же HTTP-запроса backend возвращает сохранённый результат без
+повторного прироста навыка. Новое выполнение получает новый UUID.
 
 Для отдельного блока прогноза и сравнения backend предоставляет:
 
@@ -94,10 +109,10 @@ GET /employees/{id}/simulate/{event_id}           → ActivitySimulation (без
 GET /employees/{id}/compare?first_event_id=A&second_event_id=B → ActivityComparison
 ```
 
-В мок-режиме эти маршруты обслуживаются MSW и используют локальный демо-скоринг;
-backend использует собственный взвешенный расчёт. Не смешивайте их численные
-оценки между режимами. Сам прогноз использует те же правила прироста, что
-отметка выполнения в соответствующем режиме.
+В mock-режиме эти маршруты обслуживаются MSW и используют локальный демо-скоринг;
+в реальном режиме запросы идут в FastAPI и используют его взвешенный расчёт.
+Не смешивайте численные оценки между режимами. Сам прогноз использует те же правила
+прироста, что отметка выполнения в соответствующем режиме.
 
 ## Структура
 
@@ -105,7 +120,8 @@ backend использует собственный взвешенный рас�
 src/
 ├─ api/
 │  ├─ client.ts          # fetch-обёртка, API_URL, USE_MOCK
-│  ├─ endpoints.ts       # все вызовы API
+│  ├─ endpoints.ts       # выбор mock/real маршрутов
+│  ├─ adapters.ts        # FastAPI snake_case → модели UI
 │  └─ mock/
 │     ├─ data/           # employees, events (активности), skills (требования грейдов)
 │     ├─ engine.ts       # копия логики бэка для моков: scoring, progress, HR-статистика

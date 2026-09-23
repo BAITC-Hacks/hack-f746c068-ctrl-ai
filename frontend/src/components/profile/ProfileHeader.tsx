@@ -5,6 +5,7 @@ import { Avatar, Badge, Card, ProgressBar } from '../ui'
 
 export function ProfileHeader({ profile }: { profile: Profile }) {
   const p = profile
+  const position = p.department === p.role ? p.role : `${p.department} · ${p.role}`
   return (
     <Card className="flex flex-col gap-5 md:flex-row md:items-center">
       <div className="flex items-center gap-4">
@@ -12,7 +13,7 @@ export function ProfileHeader({ profile }: { profile: Profile }) {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-slate-900">{p.name}</h1>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
-            <span>{p.department} · {p.role}</span>
+            <span>{position}</span>
             <Badge tone="brand">{p.grade}</Badge>
             <span className="text-slate-400">·</span>
             <span>стаж {formatTenure(p.tenureMonths)}</span>

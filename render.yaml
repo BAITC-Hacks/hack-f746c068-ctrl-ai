@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: career-quest-ctrl-ai
+    runtime: docker
+    plan: 0.5c-512mb
+    region: frankfurt
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: CAREER_QUEST_STATE_PATH
+        value: /var/data/state.sqlite3
+      - key: CAREER_QUEST_AUTH_FILE
+        value: /var/data/access.json
+    disk:
+      name: career-quest-data
+      mountPath: /var/data
+      sizeGB: 1

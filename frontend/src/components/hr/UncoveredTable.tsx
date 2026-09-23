@@ -5,7 +5,7 @@ import { Badge, Card, CardTitle, EmptyState } from '../ui'
 export function UncoveredTable({ rows }: { rows: HrStats['uncovered'] }) {
   return (
     <Card>
-      <CardTitle hint="нужна новая активность в каталоге">Сотрудники без релевантной рекомендации</CardTitle>
+      <CardTitle hint="причина отсутствия рекомендации">Сотрудники без следующего шага</CardTitle>
       {rows.length === 0 ? (
         <EmptyState title="Все сотрудники покрыты рекомендациями" />
       ) : (
@@ -16,7 +16,11 @@ export function UncoveredTable({ rows }: { rows: HrStats['uncovered'] }) {
                 <Link to={`/employee/${r.id}`} className="font-medium text-slate-800 hover:text-brand-600">{r.name}</Link>
                 <p className="text-sm text-slate-500">{r.reason}</p>
               </div>
-              <div className="flex flex-wrap gap-1.5"><Badge>{r.department}</Badge><Badge>{r.role}</Badge><Badge tone="brand">{r.grade}</Badge></div>
+              <div className="flex flex-wrap gap-1.5">
+                {r.department !== r.role && <Badge>{r.department}</Badge>}
+                <Badge>{r.role}</Badge>
+                <Badge tone="brand">{r.grade}</Badge>
+              </div>
             </li>
           ))}
         </ul>

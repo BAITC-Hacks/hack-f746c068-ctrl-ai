@@ -6,15 +6,25 @@ export const activityTypeLabel: Record<ActivityType, string> = {
   project: 'Проект',
   workshop: 'Воркшоп',
   certification: 'Сертификация',
+  meetup: 'Митап',
+  assessment: 'Оценка',
 }
 
 export const statusLabel: Record<ActivityStatus, string> = {
+  invited: 'Приглашён',
+  enrolled: 'Записан',
   completed: 'Выполнено',
   skipped: 'Пропущено',
   declined: 'Отклонено',
 }
 
-export const statusTone = { completed: 'green', skipped: 'amber', declined: 'rose' } as const
+export const statusTone = {
+  invited: 'slate',
+  enrolled: 'brand',
+  completed: 'green',
+  skipped: 'amber',
+  declined: 'rose',
+} as const
 
 export const MAX_LEVEL = 5
 

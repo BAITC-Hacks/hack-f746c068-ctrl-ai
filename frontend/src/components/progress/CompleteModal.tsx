@@ -32,27 +32,41 @@ export function CompleteModal({ result, onClose }: { result: ProgressResult | nu
             </div>
           </div>
 
-          <div className="mt-5 tile p-4">
-            <p className="text-sm font-medium text-slate-700">{r.skill}</p>
-            <div className="mt-3 grid grid-cols-[3rem_1fr] items-center gap-y-2 text-sm">
-              <span className="text-slate-500">было</span>
-              <LevelDots level={r.before} />
-              <span className="text-slate-500">стало</span>
-              <LevelDots level={r.after} highlightFrom={r.before} />
-            </div>
-            <p className="mt-3 rounded-lg bg-white px-3 py-2 font-mono text-xs text-slate-600">
-              new_skill = min({r.before} + {r.gain}, {r.maxLevel}) = <b className="text-emerald-600">{r.after}</b>
-            </p>
+          <div className="mt-5 space-y-3">
+            {r.changes.map((change) => (
+              <div key={change.skill} className="tile p-4">
+                <p className="text-sm font-medium text-slate-700">{change.skill}</p>
+                <div className="mt-3 grid grid-cols-[3rem_1fr] items-center gap-y-2 text-sm">
+                  <span className="text-slate-500">было</span>
+                  <LevelDots level={change.before} />
+                  <span className="text-slate-500">стало</span>
+                  <LevelDots level={change.after} highlightFrom={change.before} />
+                </div>
+                <p className="mt-3 rounded-lg bg-white px-3 py-2 font-mono text-xs text-slate-600">
+                  new_skill = max({change.before}, min({change.before} + {change.gain}, {change.maxLevel})) = <b className="text-emerald-600">{change.after}</b>
+                </p>
+              </div>
+            ))}
+            {r.changes.length === 0 && (
+              <p className="tile p-4 text-sm text-slate-600">Уровни навыков не изменились.</p>
+            )}
           </div>
 
           <div className="mt-4">
             <div className="mb-1.5 flex justify-between text-sm">
               <span className="text-slate-600">Готовность к следующему грейду</span>
               <span className="font-semibold">
-                {r.readinessBefore}% → <span className="text-emerald-600">{r.readinessAfter}%</span>
+                {r.readinessBefore === null ? '—' : `${r.readinessBefore}%`} →{' '}
+                <span className="text-emerald-600">{r.readinessAfter === null ? '—' : `${r.readinessAfter}%`}</span>
               </span>
             </div>
-            <ProgressBar value={r.readinessAfter} tone="green" className="h-2.5" />
+            {r.readinessAfter === null ? (
+              <p className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">
+                Для максимального грейда готовность к следующему уровню не рассчитывается.
+              </p>
+            ) : (
+              <ProgressBar value={r.readinessAfter} tone="green" className="h-2.5" />
+            )}
           </div>
 
           {r.gradeUnlocked && (

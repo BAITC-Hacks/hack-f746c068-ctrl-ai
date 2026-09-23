@@ -173,6 +173,60 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(profile["employee"]["skills"]["SK_SYSTEM_DESIGN"], 3)
             self.assertEqual(restarted.state.store.snapshot().model_dump(mode="json"), after)
 
+    def test_e001_end_to_end_updates_profile_recommendations_and_hr_dashboard(self):
+        profile_before = self.client.get("/employees/E001", headers=self.employee)
+        recommendation_before = self.client.get(
+            "/employees/E001/recommendations?limit=1", headers=self.employee)
+        dashboard_before = self.client.get("/hr/dashboard", headers=self.hr)
+        self.assertEqual((profile_before.status_code, recommendation_before.status_code,
+                          dashboard_before.status_code), (200, 200, 200))
+        profile_before = profile_before.json()
+        dashboard_before = dashboard_before.json()
+        self.assertEqual(profile_before["employee"]["skills"]["SK_SYSTEM_DESIGN"], 2)
+        self.assertAlmostEqual(profile_before["readiness"]["readiness_percent"],
+                               81.73076923076923)
+        self.assertEqual(recommendation_before.json()["recommendations"][0]["event_id"],
+                         "EV002")
+
+        completion = self.complete(event_id="EV002", key=uuid4())
+        self.assertEqual(completion.status_code, 200, completion.text)
+        self.assertEqual(completion.json()["skill_changes"], [
+            {"skill_id": "SK_SYSTEM_DESIGN", "before": 2,
+             "after": 3, "gain_applied": 1},
+        ])
+
+        profile_after = self.client.get("/employees/E001", headers=self.employee)
+        recommendation_after = self.client.get(
+            "/employees/E001/recommendations", headers=self.employee)
+        dashboard_after = self.client.get("/hr/dashboard", headers=self.hr)
+        self.assertEqual((profile_after.status_code, recommendation_after.status_code,
+                          dashboard_after.status_code), (200, 200, 200))
+        profile_after = profile_after.json()
+        dashboard_after = dashboard_after.json()
+        self.assertEqual(profile_after["employee"]["skills"]["SK_SYSTEM_DESIGN"], 3)
+        self.assertAlmostEqual(profile_after["readiness"]["readiness_percent"],
+                               86.53846153846153)
+        self.assertEqual(profile_after["readiness"], completion.json()["readiness_after"])
+        self.assertEqual(recommendation_after.json(), completion.json()["recommendations"])
+        self.assertEqual(recommendation_after.json()["recommendations"][0]["event_id"],
+                         "EV006")
+        self.assertGreater(dashboard_after["average_readiness_percent"],
+                           dashboard_before["average_readiness_percent"])
+        self.assertEqual(dashboard_after["participation"]["completed"],
+                         dashboard_before["participation"]["completed"] + 1)
+
+        def backend_design_gap(dashboard):
+            return next(item for item in dashboard["role_skill_deficits"]
+                        if item["role"] == "Backend Engineer"
+                        and item["skill_id"] == "SK_SYSTEM_DESIGN")
+
+        role_gap_before = backend_design_gap(dashboard_before)
+        role_gap_after = backend_design_gap(dashboard_after)
+        self.assertEqual((role_gap_before["eligible_employees"],
+                          role_gap_before["affected_employees"]), (9, 7))
+        self.assertAlmostEqual(role_gap_before["average_gap_across_role"], 13 / 9)
+        self.assertAlmostEqual(role_gap_after["average_gap_across_role"], 12 / 9)
+
     def test_retry_key_cannot_be_reused_for_another_target(self):
         key = uuid4()
         self.assertEqual(self.complete(key=key).status_code, 200)

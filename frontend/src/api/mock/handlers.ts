@@ -10,6 +10,8 @@ const notFound = () => HttpResponse.json({ detail: 'Not found' }, { status: 404 
 const fail = (status: number, error: string, message: string) => HttpResponse.json({ error, message }, { status })
 const unauthorized = () => fail(401, 'unauthorized', 'Нужно войти в систему')
 const forbidden = () => fail(403, 'forbidden', 'Недостаточно прав')
+const completionReplay = new Map<string, { target: string; result: NonNullable<ReturnType<typeof engine.completeActivity>> }>()
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 // Права как в backend/api/auth.py: HR видит всех, сотрудник — только себя
 async function guard(request: Request, opts: { hr?: boolean; employeeId?: string } = {}) {
@@ -105,8 +107,20 @@ export const handlers = [
   http.post(url('/employees/:id/activities/:aid/complete'), async ({ params, request }) => {
     const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(600)
+    const key = request.headers.get('Idempotency-Key') ?? ''
+    if (!UUID.test(key)) return fail(422, 'invalid_idempotency_key', 'Idempotency-Key должен быть UUID')
+    const account = await auth.accountByRequest(request)
+    const scopedKey = `${account!.accountId}:${key}`
+    const target = `${params.id}/${params.aid}`
+    const replay = completionReplay.get(scopedKey)
+    if (replay && replay.target !== target) {
+      return fail(409, 'idempotency_conflict', 'Idempotency-Key уже использован для другой активности')
+    }
+    if (replay) return HttpResponse.json(replay.result, { headers: { 'Idempotency-Replayed': 'true' } })
     const r = engine.completeActivity(params.id as string, params.aid as string)
-    return r ? HttpResponse.json(r) : notFound()
+    if (!r) return notFound()
+    completionReplay.set(scopedKey, { target, result: r })
+    return HttpResponse.json(r, { headers: { 'Idempotency-Replayed': 'false' } })
   }),
 
   http.post(url('/employees/:id/activities/:aid/:action'), async ({ params, request }) => {

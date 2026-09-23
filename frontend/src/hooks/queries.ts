@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/endpoints'
+import { ApiError, createIdempotencyKey } from '../api/client'
 
 export const qk = {
   employees: ['employees'] as const,
@@ -52,8 +53,19 @@ function useInvalidateEmployee(id: string) {
 
 export function useCompleteActivity(id: string) {
   const invalidate = useInvalidateEmployee(id)
-  return useMutation({ mutationFn: (aid: string) => api.completeActivity(id, aid), onSuccess: invalidate })
+  return useMutation({
+    mutationFn: ({ aid, idempotencyKey }: { aid: string; idempotencyKey: string }) =>
+      api.completeActivity(id, aid, idempotencyKey),
+    onSuccess: invalidate,
+    // React Query повторно передаёт те же variables, поэтому transport-retry
+    // использует тот же UUID и не начисляет gain второй раз.
+    retry: (failureCount, error) => failureCount < 1
+      && error instanceof ApiError
+      && (error.status === 0 || error.status >= 500),
+  })
 }
+
+export const completeAttempt = (aid: string, idempotencyKey = createIdempotencyKey()) => ({ aid, idempotencyKey })
 
 export function useRejectActivity(id: string) {
   const invalidate = useInvalidateEmployee(id)
