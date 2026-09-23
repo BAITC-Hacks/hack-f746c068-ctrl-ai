@@ -55,6 +55,18 @@ class GradeProgressTests(unittest.TestCase):
         self.assertEqual(result.mandatory_readiness_percent, 100)
         self.assertTrue(result.meets_mandatory)
 
+    def test_full_readiness_with_fractional_weights_stays_at_100(self):
+        employee = self.dataset.employees[0].model_copy(deep=True)
+        track = self.dataset.skills.career_tracks[0].model_copy(deep=True)
+        weights = [0.74, 0.46, 0.59, 0.35, 0.85, 0.71]
+        for (skill_id, requirement), weight in zip(track.requirements["Senior"].items(), weights):
+            requirement.importance = weight
+            employee.skills[skill_id] = requirement.level
+        result = calculate_grade_readiness(employee, track)
+        self.assertEqual(result.readiness_percent, 100)
+        self.assertEqual(result.mandatory_readiness_percent, 100)
+        self.assertTrue(result.meets_mandatory)
+
     def test_skill_increase_is_monotonic_and_inputs_are_unchanged(self):
         employee = self.dataset.employees[0]
         track = self.dataset.skills.career_tracks[0]

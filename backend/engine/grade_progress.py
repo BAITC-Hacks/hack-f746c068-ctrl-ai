@@ -69,8 +69,8 @@ def calculate_readiness_from_gaps(gaps: SkillGapResult) -> GradeReadinessResult:
         raise ValueError("Target grade needs at least one mandatory skill with positive weight")
     return GradeReadinessResult(
         **common,
-        readiness_percent=100.0 * earned_weight / total_weight,
-        mandatory_readiness_percent=100.0 * mandatory_earned / mandatory_weight,
+        readiness_percent=min(100.0, 100.0 * (earned_weight / total_weight)),
+        mandatory_readiness_percent=min(100.0, 100.0 * (mandatory_earned / mandatory_weight)),
         meets_mandatory=all(item.fulfilled for item in gaps.gaps.values() if item.mandatory),
         skills=skills,
     )
