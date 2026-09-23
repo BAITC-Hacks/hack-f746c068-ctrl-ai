@@ -43,7 +43,7 @@ export function Badge({ children, tone = 'slate' }: { children: ReactNode; tone?
 
 type BtnVariant = 'primary' | 'ghost' | 'danger'
 const btnVariants: Record<BtnVariant, string> = {
-  primary: 'bg-brand-600 text-white shadow-[0_6px_20px_-6px_rgba(0,113,227,0.6)] hover:bg-[#0077ed] disabled:bg-brand-600/50 disabled:shadow-none',
+  primary: 'bg-brand-600 text-white shadow-[0_6px_20px_-6px_rgba(0,129,95,0.55)] hover:bg-[#006f52] disabled:bg-brand-600/50 disabled:shadow-none',
   ghost: 'bg-white/70 text-slate-800 ring-1 ring-black/5 backdrop-blur hover:bg-white disabled:opacity-50',
   danger: 'text-rose-600 hover:bg-rose-500/10 disabled:opacity-50',
 }
@@ -75,7 +75,7 @@ export function ProgressBar({ value, className, tone = 'brand' }: { value: numbe
       <div
         className={cn(
           'h-full rounded-full transition-all duration-1000 ease-out',
-          tone === 'green' ? 'bg-gradient-to-r from-[#30d158] to-[#34c759]' : 'bg-gradient-to-r from-[#0a84ff] to-[#5e5ce6]',
+          tone === 'green' ? 'bg-gradient-to-r from-[#ffc629] to-[#f1a400]' : 'bg-gradient-to-r from-[#1fae7a] to-[#00815f]',
         )}
         style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
       />

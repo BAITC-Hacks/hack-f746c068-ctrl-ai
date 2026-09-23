@@ -10,7 +10,7 @@ function LevelDots({ level, highlightFrom }: { level: number; highlightFrom?: nu
           key={i}
           className={cn(
             'h-3 w-7 rounded-full',
-            i < level ? (highlightFrom !== undefined && i >= highlightFrom ? 'bg-gradient-to-r from-[#30d158] to-[#34c759]' : 'bg-gradient-to-r from-[#0a84ff] to-[#5e5ce6]') : 'bg-black/[0.05]',
+            i < level ? (highlightFrom !== undefined && i >= highlightFrom ? 'bg-gradient-to-r from-[#ffc629] to-[#f1a400]' : 'bg-gradient-to-r from-[#1fae7a] to-[#00815f]') : 'bg-black/[0.05]',
           )}
         />
       ))}

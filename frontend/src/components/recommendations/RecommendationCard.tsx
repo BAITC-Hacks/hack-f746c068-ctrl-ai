@@ -20,9 +20,9 @@ export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSk
   const capped = rec.currentLevel + rec.gain > rec.maxLevel
 
   return (
-    <Card className={cn('animate-[fadein_.35s_ease-out]', rank === 1 && 'ring-2 ring-brand-500/25')}>
+    <Card className={cn('animate-[fadein_.35s_ease-out]', rank === 1 && 'ring-2 ring-[#f1a400]/40')}>
       <div className="flex gap-4">
-        <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold', rank === 1 ? 'bg-gradient-to-br from-[#0a84ff] to-[#5e5ce6] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]' : 'bg-white/70 text-slate-600 ring-1 ring-black/5')}>
+        <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold', rank === 1 ? 'bg-gradient-to-br from-[#ffc629] to-[#f1a400] text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]' : 'bg-white/70 text-slate-600 ring-1 ring-black/5')}>
           {rank}
         </div>
         <div className="min-w-0 flex-1">

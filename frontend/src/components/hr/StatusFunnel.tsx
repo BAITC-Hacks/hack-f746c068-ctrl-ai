@@ -2,7 +2,7 @@ import type { ActivityStatus } from '../../types'
 import { statusLabel } from '../labels'
 import { Card, CardTitle } from '../ui'
 
-const colors: Record<ActivityStatus, string> = { completed: 'bg-[#34c759]', skipped: 'bg-[#ff9f0a]', declined: 'bg-[#ff375f]' }
+const colors: Record<ActivityStatus, string> = { completed: 'bg-[#00815f]', skipped: 'bg-[#a1a1a6]', declined: 'bg-[#ff375f]' }
 
 export function StatusFunnel({ counts }: { counts: Record<ActivityStatus, number> }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1

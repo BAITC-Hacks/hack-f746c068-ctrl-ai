@@ -8,9 +8,11 @@ import { GapList } from '../components/profile/GapList'
 import { RecommendationCard } from '../components/recommendations/RecommendationCard'
 import { CompleteModal } from '../components/progress/CompleteModal'
 import { EmptyState, ErrorState, Skeleton } from '../components/ui'
+import { useAuth } from '../auth/AuthContext'
 
 export function ProfilePage() {
   const { id = '' } = useParams()
+  const { session } = useAuth()
   const profile = useProfile(id)
   const recs = useRecommendations(id)
   const complete = useCompleteActivity(id)
@@ -36,7 +38,7 @@ export function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/" className="inline-flex rounded-full bg-white/60 px-4 py-1.5 text-sm font-medium text-slate-600 ring-1 ring-black/5 backdrop-blur transition hover:bg-white hover:text-slate-900">← Все сотрудники</Link>
+      {session?.role === 'hr' && <Link to="/" className="inline-flex rounded-full bg-white/60 px-4 py-1.5 text-sm font-medium text-slate-600 ring-1 ring-black/5 backdrop-blur transition hover:bg-white hover:text-slate-900">← Все сотрудники</Link>}
 
       {profile.data ? <ProfileHeader profile={profile.data} /> : <Skeleton className="h-28" />}
 

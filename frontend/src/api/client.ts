@@ -1,6 +1,8 @@
 export const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ?? 'http://localhost:8000'
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 
+import { getSession, setSession } from '../auth/session'
+
 export class ApiError extends Error {
   status: number
   constructor(status: number, message: string) {
@@ -20,7 +22,15 @@ async function mockFetch(url: string, init?: RequestInit): Promise<Response> {
 
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const url = `${API_URL}${path}`
-  const opts: RequestInit = { headers: { 'Content-Type': 'application/json' }, ...init }
+  const token = getSession()?.token
+  const opts: RequestInit = {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init?.headers ?? {}),
+    },
+  }
   const swActive = typeof navigator !== 'undefined' && !!navigator.serviceWorker?.controller
 
   let res: Response
@@ -37,7 +47,10 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
   if (!res.ok) {
     const body = await res.json().catch(() => ({}))
-    throw new ApiError(res.status, body.detail ?? `Ошибка ${res.status}`)
+    // Токен недействителен — сбрасываем сессию, охрана маршрутов отправит на /login
+    if (res.status === 401 && token && !path.startsWith('/auth/')) setSession(null)
+    const message = body.message ?? (typeof body.detail === 'string' ? body.detail : body.detail?.message)
+    throw new ApiError(res.status, message ?? `Ошибка ${res.status}`)
   }
   return res.json() as Promise<T>
 }

@@ -32,7 +32,7 @@ export function GapHeatmap({ data }: { data: HrStats['gapsByRole'] }) {
                       key={s}
                       title={`${r} · ${s}: ${c.avgGap}`}
                       className="h-9 rounded-md text-center font-medium tabular-nums"
-                      style={{ background: c.avgGap === 0 ? '#f1f5f9' : `rgba(10,132,255,${0.12 + t * 0.78})`, color: t > 0.55 ? '#fff' : '#334155' }}
+                      style={{ background: c.avgGap === 0 ? '#f1f5f9' : `rgba(0,129,95,${0.12 + t * 0.78})`, color: t > 0.55 ? '#fff' : '#334155' }}
                     >
                       {c.avgGap || '·'}
                     </td>

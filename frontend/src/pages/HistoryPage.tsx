@@ -3,7 +3,7 @@ import { useHistory, useProfile } from '../hooks/queries'
 import { statusLabel, statusTone } from '../components/labels'
 import { Badge, Card, EmptyState, ErrorState, PageHeader, Skeleton } from '../components/ui'
 
-const dotColor = { completed: 'bg-[#34c759]', skipped: 'bg-[#ff9f0a]', declined: 'bg-[#ff375f]' }
+const dotColor = { completed: 'bg-[#00815f]', skipped: 'bg-[#a1a1a6]', declined: 'bg-[#ff375f]' }
 
 export function HistoryPage() {
   const { id = '' } = useParams()

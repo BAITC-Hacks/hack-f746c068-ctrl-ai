@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================================
-   Liquid Glass — стиль в духе apple.com
+   Liquid Glass (Apple) × зелёно-золотая палитра
    ============================================================ */
 
 body {
@@ -20,10 +20,10 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(38vmax 38vmax at 12% 8%, rgba(10, 132, 255, 0.22), transparent 60%),
-    radial-gradient(34vmax 34vmax at 88% 12%, rgba(191, 90, 242, 0.18), transparent 60%),
-    radial-gradient(40vmax 40vmax at 78% 88%, rgba(48, 209, 88, 0.14), transparent 60%),
-    radial-gradient(36vmax 36vmax at 8% 92%, rgba(255, 159, 10, 0.14), transparent 60%),
+    radial-gradient(38vmax 38vmax at 10% 6%, rgba(0, 129, 95, 0.24), transparent 60%),
+    radial-gradient(34vmax 34vmax at 90% 10%, rgba(241, 164, 0, 0.22), transparent 60%),
+    radial-gradient(40vmax 40vmax at 80% 90%, rgba(31, 174, 122, 0.18), transparent 60%),
+    radial-gradient(36vmax 36vmax at 6% 94%, rgba(255, 210, 77, 0.20), transparent 60%),
     #f5f5f7;
   filter: saturate(115%);
   animation: drift 40s ease-in-out infinite alternate;
@@ -84,7 +84,7 @@ body::before {
   }
 
   .text-gradient {
-    background: linear-gradient(100deg, #0071e3 0%, #7d5cf0 55%, #bf5af2 100%);
+    background: linear-gradient(100deg, #00815f 0%, #1fae7a 45%, #f1a400 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

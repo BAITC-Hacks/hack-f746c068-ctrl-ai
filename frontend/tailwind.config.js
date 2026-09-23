@@ -7,8 +7,9 @@ export default {
         sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Inter', '"Segoe UI Variable"', '"Segoe UI"', 'system-ui', 'sans-serif'],
       },
       colors: {
-        // Apple-синий
-        brand: { 50: '#eef6ff', 100: '#d9ebff', 500: '#0a84ff', 600: '#0071e3', 700: '#0058b0' },
+        // Фирменный зелёный (#00815F) и золотой (#F1A400)
+        brand: { 50: '#e6f4ef', 100: '#c7e7da', 500: '#1fae7a', 600: '#00815f', 700: '#006a4e' },
+        gold: { 300: '#ffd24d', 400: '#ffc629', 500: '#f1a400', 600: '#d18e00' },
         // Нейтральные серые в духе apple.com (переопределяют slate во всём проекте)
         slate: {
           50: '#f5f5f7', 100: '#ededf0', 200: '#e3e3e8', 300: '#d2d2d7', 400: '#a1a1a6',

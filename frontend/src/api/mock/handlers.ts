@@ -1,40 +1,90 @@
 import { delay, http, HttpResponse } from 'msw'
 import * as engine from './engine'
+import * as auth from './auth'
 import { API_URL } from '../client'
 
 // Перехватываем ровно те же URL, что будет обслуживать FastAPI
 const url = (path: string) => `${API_URL}${path}`
 const notFound = () => HttpResponse.json({ detail: 'Not found' }, { status: 404 })
+// Формат ошибок как у FastAPI-бэкенда: { error, message }
+const fail = (status: number, error: string, message: string) => HttpResponse.json({ error, message }, { status })
+const unauthorized = () => fail(401, 'unauthorized', 'Нужно войти в систему')
+const forbidden = () => fail(403, 'forbidden', 'Недостаточно прав')
+
+// Права как в backend/api/auth.py: HR видит всех, сотрудник — только себя
+async function guard(request: Request, opts: { hr?: boolean; employeeId?: string } = {}) {
+  const acc = await auth.accountByRequest(request)
+  if (!acc) return unauthorized()
+  if (opts.hr && acc.role !== 'hr') return forbidden()
+  if (opts.employeeId && acc.role !== 'hr' && acc.employeeId !== opts.employeeId) return forbidden()
+  return null
+}
 
 export const handlers = [
-  http.get(url('/employees'), async () => {
+  // ---------- Авторизация ----------
+  http.post(url('/auth/login'), async ({ request }) => {
+    await delay(500)
+    const { email, password } = (await request.json()) as { email: string; password: string }
+    const res = await auth.login(email ?? '', password ?? '')
+    return res ? HttpResponse.json(res) : fail(401, 'invalid_credentials', 'Неверная почта или пароль')
+  }),
+
+  http.post(url('/auth/register'), async ({ request }) => {
+    await delay(600)
+    const body = (await request.json()) as Parameters<typeof auth.register>[0]
+    if (!body?.name?.trim() || !body?.email?.includes('@') || (body?.password ?? '').length < 6) {
+      return fail(422, 'invalid_request', 'Проверьте имя, почту и пароль (минимум 6 символов)')
+    }
+    const res = await auth.register(body)
+    return 'error' in res ? fail(409, 'conflict', res.error!) : HttpResponse.json(res.account)
+  }),
+
+  http.get(url('/auth/me'), async ({ request }) => {
+    const acc = await auth.accountByRequest(request)
+    if (!acc) return unauthorized()
+    return HttpResponse.json({ account_id: acc.accountId, role: acc.role, employee_id: acc.employeeId })
+  }),
+
+  // Публичный справочник для формы регистрации: выбрать свой профиль
+  http.get(url('/auth/directory'), async () => {
+    await delay(200)
+    return HttpResponse.json(engine.listEmployees().map((e) => ({ id: e.id, name: e.name, role: e.role, department: e.department })))
+  }),
+
+  http.get(url('/employees'), async ({ request }) => {
+    const denied = await guard(request, { hr: true }); if (denied) return denied
     await delay(300)
     return HttpResponse.json(engine.listEmployees())
   }),
 
-  http.get(url('/employees/:id/profile'), async ({ params }) => {
+  http.get(url('/employees/:id/profile'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(350)
     const p = engine.getProfile(params.id as string)
     return p ? HttpResponse.json(p) : notFound()
   }),
 
-  http.get(url('/employees/:id/recommendations'), async ({ params }) => {
+  http.get(url('/employees/:id/recommendations'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(700) // имитируем работу scoring + LLM
     return HttpResponse.json(engine.getRecommendations(params.id as string))
   }),
 
-  http.get(url('/employees/:id/history'), async ({ params }) => {
+  http.get(url('/employees/:id/history'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(250)
     return HttpResponse.json(engine.getHistory(params.id as string))
   }),
 
-  http.post(url('/employees/:id/activities/:aid/complete'), async ({ params }) => {
+  http.post(url('/employees/:id/activities/:aid/complete'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(600)
     const r = engine.completeActivity(params.id as string, params.aid as string)
     return r ? HttpResponse.json(r) : notFound()
   }),
 
-  http.post(url('/employees/:id/activities/:aid/:action'), async ({ params }) => {
+  http.post(url('/employees/:id/activities/:aid/:action'), async ({ params, request }) => {
+    const denied = await guard(request, { employeeId: params.id as string }); if (denied) return denied
     await delay(300)
     const action = params.action as string
     if (action !== 'skip' && action !== 'decline') return notFound()
@@ -42,7 +92,8 @@ export const handlers = [
     return ok ? HttpResponse.json({ ok: true }) : notFound()
   }),
 
-  http.get(url('/hr/stats'), async () => {
+  http.get(url('/hr/stats'), async ({ request }) => {
+    const denied = await guard(request, { hr: true }); if (denied) return denied
     await delay(400)
     return HttpResponse.json(engine.getHrStats())
   }),

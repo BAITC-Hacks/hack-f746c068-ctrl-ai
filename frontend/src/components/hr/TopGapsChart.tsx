@@ -10,8 +10,8 @@ export function TopGapsChart({ data }: { data: HrStats['topGaps'] }) {
         <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16 }}>
           <defs>
             <linearGradient id="gapBar" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0a84ff" />
-              <stop offset="100%" stopColor="#5e5ce6" />
+              <stop offset="0%" stopColor="#1fae7a" />
+              <stop offset="100%" stopColor="#00815f" />
             </linearGradient>
           </defs>
           <CartesianGrid horizontal={false} stroke="rgba(0,0,0,0.06)" />
