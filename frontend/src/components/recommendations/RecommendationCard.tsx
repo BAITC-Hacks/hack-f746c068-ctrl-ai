@@ -20,15 +20,15 @@ export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSk
   const capped = rec.currentLevel + rec.gain > rec.maxLevel
 
   return (
-    <Card className={cn('animate-[fadein_.35s_ease-out]', rank === 1 && 'ring-2 ring-brand-500/30')}>
+    <Card className={cn('animate-[fadein_.35s_ease-out]', rank === 1 && 'ring-2 ring-brand-500/25')}>
       <div className="flex gap-4">
-        <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold', rank === 1 ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600')}>
+        <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold', rank === 1 ? 'bg-gradient-to-br from-[#0a84ff] to-[#5e5ce6] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]' : 'bg-white/70 text-slate-600 ring-1 ring-black/5')}>
           {rank}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <h3 className="font-semibold text-slate-900">{rec.title}</h3>
+              <h3 className="text-lg font-semibold tracking-tight text-slate-900">{rec.title}</h3>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 <Badge tone="brand">{rec.skill}</Badge>
                 <Badge>{activityTypeLabel[rec.type]}</Badge>
@@ -36,30 +36,30 @@ export function RecommendationCard({ rec, rank, busy, disabled, onComplete, onSk
               </div>
             </div>
             <div className="shrink-0 text-left sm:text-right">
-              <p className="text-2xl font-semibold tabular-nums text-slate-900">{Math.round(rec.score * 100)}</p>
+              <p className="text-4xl font-semibold tracking-tight tabular-nums text-slate-900">{Math.round(rec.score * 100)}</p>
               <p className="text-xs text-slate-500">score</p>
             </div>
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
-            <div className="rounded-lg bg-slate-50 px-3 py-2">
+            <div className="tile px-4 py-2.5">
               <p className="text-xs text-slate-500">Навык</p>
               <p className="font-medium text-slate-800">
                 {rec.currentLevel} → <span className="text-emerald-600">{after}</span>
                 <span className="ml-1 text-xs font-normal text-slate-500">(+{rec.gain}{capped ? `, cap ${rec.maxLevel}` : ''})</span>
               </p>
             </div>
-            <div className="rounded-lg bg-slate-50 px-3 py-2">
+            <div className="tile px-4 py-2.5">
               <p className="text-xs text-slate-500">max_level</p>
               <p className="font-medium text-slate-800">{rec.maxLevel}</p>
             </div>
-            <div className="col-span-2 rounded-lg bg-slate-50 px-3 py-2 sm:col-span-1">
+            <div className="col-span-2 tile px-4 py-2.5 sm:col-span-1">
               <p className="text-xs text-slate-500">Готовность после</p>
               <p className="font-medium text-emerald-600">{rec.readinessAfter}%</p>
             </div>
           </div>
 
-          <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50/60 p-3.5">
+          <div className="mt-4 rounded-2xl bg-brand-500/[0.07] p-4 ring-1 ring-brand-500/15">
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-700">Почему это подходит · AI</p>
             <p className="text-sm leading-relaxed text-slate-700">{rec.explanation}</p>
           </div>

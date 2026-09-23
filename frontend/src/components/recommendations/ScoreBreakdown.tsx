@@ -4,7 +4,7 @@ import type { ScoreFactor } from '../../types'
 export function ScoreBreakdown({ factors, score }: { factors: ScoreFactor[]; score: number }) {
   const sorted = [...factors].sort((a, b) => b.weight * b.value - a.weight * a.value)
   return (
-    <div className="rounded-xl bg-slate-50 p-4">
+    <div className="tile p-4">
       <div className="mb-3 flex items-baseline justify-between text-xs text-slate-500">
         <span>Фактор</span>
         <span>вес × значение = вклад</span>

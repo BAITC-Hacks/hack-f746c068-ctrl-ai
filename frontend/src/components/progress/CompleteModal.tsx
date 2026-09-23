@@ -9,8 +9,8 @@ function LevelDots({ level, highlightFrom }: { level: number; highlightFrom?: nu
         <div
           key={i}
           className={cn(
-            'h-3 w-7 rounded-sm',
-            i < level ? (highlightFrom !== undefined && i >= highlightFrom ? 'bg-emerald-500' : 'bg-brand-500') : 'bg-slate-100',
+            'h-3 w-7 rounded-full',
+            i < level ? (highlightFrom !== undefined && i >= highlightFrom ? 'bg-gradient-to-r from-[#30d158] to-[#34c759]' : 'bg-gradient-to-r from-[#0a84ff] to-[#5e5ce6]') : 'bg-black/[0.05]',
           )}
         />
       ))}
@@ -32,7 +32,7 @@ export function CompleteModal({ result, onClose }: { result: ProgressResult | nu
             </div>
           </div>
 
-          <div className="mt-5 rounded-xl bg-slate-50 p-4">
+          <div className="mt-5 tile p-4">
             <p className="text-sm font-medium text-slate-700">{r.skill}</p>
             <div className="mt-3 grid grid-cols-[3rem_1fr] items-center gap-y-2 text-sm">
               <span className="text-slate-500">было</span>

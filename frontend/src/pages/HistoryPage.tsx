@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router-dom'
 import { useHistory, useProfile } from '../hooks/queries'
 import { statusLabel, statusTone } from '../components/labels'
-import { Badge, Card, EmptyState, ErrorState, Skeleton } from '../components/ui'
+import { Badge, Card, EmptyState, ErrorState, PageHeader, Skeleton } from '../components/ui'
 
-const dotColor = { completed: 'bg-emerald-500', skipped: 'bg-amber-400', declined: 'bg-rose-500' }
+const dotColor = { completed: 'bg-[#34c759]', skipped: 'bg-[#ff9f0a]', declined: 'bg-[#ff375f]' }
 
 export function HistoryPage() {
   const { id = '' } = useParams()
@@ -12,8 +12,8 @@ export function HistoryPage() {
 
   return (
     <div className="space-y-6">
-      <Link to={`/employee/${id}`} className="text-sm text-slate-500 hover:text-slate-800">← Профиль</Link>
-      <h1 className="text-2xl font-semibold text-slate-900">История активностей{profile.data && `: ${profile.data.name}`}</h1>
+      <Link to={`/employee/${id}`} className="inline-flex rounded-full bg-white/60 px-4 py-1.5 text-sm font-medium text-slate-600 ring-1 ring-black/5 backdrop-blur transition hover:bg-white hover:text-slate-900">← Профиль</Link>
+      <PageHeader eyebrow="История активностей" title={profile.data?.name ?? "…"} subtitle="Что сотрудник прошёл, пропустил или отклонил — и как это изменило его навыки." />
 
       {history.error && <ErrorState error={history.error} onRetry={history.refetch} />}
       {history.isLoading && <Skeleton className="h-64" />}

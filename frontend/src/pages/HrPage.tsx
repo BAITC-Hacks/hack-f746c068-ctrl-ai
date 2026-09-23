@@ -1,5 +1,5 @@
 import { useHrStats } from '../hooks/queries'
-import { Card, ErrorState, Skeleton } from '../components/ui'
+import { Card, ErrorState, PageHeader, Skeleton } from '../components/ui'
 import { TopGapsChart } from '../components/hr/TopGapsChart'
 import { StatusFunnel } from '../components/hr/StatusFunnel'
 import { GapHeatmap } from '../components/hr/GapHeatmap'
@@ -8,8 +8,8 @@ import { UncoveredTable } from '../components/hr/UncoveredTable'
 function Kpi({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
   return (
     <Card>
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="mt-1 text-3xl font-semibold tabular-nums text-slate-900">{value}</p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-2 text-4xl font-semibold tracking-tight tabular-nums text-slate-900">{value}</p>
       {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
     </Card>
   )
@@ -20,10 +20,11 @@ export function HrPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">HR-аналитика</h1>
-        <p className="mt-1 text-sm text-slate-500">Агрегированная картина по разрывам и вовлечённости</p>
-      </div>
+      <PageHeader
+        eyebrow="HR-аналитика"
+        title={<>Вся команда. <span className="text-gradient">Одним взглядом.</span></>}
+        subtitle="Где у команды разрывы в навыках, кто вовлечён в развитие и кому не хватает подходящих активностей."
+      />
 
       {error && <ErrorState error={error} onRetry={refetch} />}
       {isLoading && <div className="grid gap-4 md:grid-cols-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-28" />)}</div>}

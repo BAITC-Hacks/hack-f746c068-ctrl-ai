@@ -10,7 +10,7 @@ export function ProfileHeader({ profile }: { profile: Profile }) {
       <div className="flex items-center gap-4">
         <Avatar name={p.name} size="lg" />
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">{p.name}</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-900">{p.name}</h1>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
             <span>{p.department} · {p.role}</span>
             <Badge tone="brand">{p.grade}</Badge>
@@ -28,7 +28,7 @@ export function ProfileHeader({ profile }: { profile: Profile }) {
           <>
             <div className="mb-1.5 flex items-baseline justify-between text-sm">
               <span className="text-slate-600">Готовность к <b className="text-slate-900">{p.nextGrade}</b></span>
-              <span className="text-lg font-semibold text-slate-900">{p.readiness}%</span>
+              <span className="text-3xl font-semibold tracking-tight text-slate-900 tabular-nums">{p.readiness}%</span>
             </div>
             <ProgressBar value={p.readiness} tone={p.readiness >= 100 ? 'green' : 'brand'} className="h-2.5" />
             <p className="mt-1.5 text-xs text-slate-500">

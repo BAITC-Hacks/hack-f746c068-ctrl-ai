@@ -146,6 +146,20 @@ function generate(): MockEmployee[] {
       out.push({ id: `e${n++}`, name, role, grade, tenureMonths: 3 + Math.floor(r() * 80), skills, history })
     }
   }
+  // Фамилия «Токаев» остаётся только у одного сотрудника — остальным даём другие фамилии
+  const altM = ['Касымов', 'Ахметжанов', 'Павлов', 'Нургалиев', 'Лебедев']
+  const altF = ['Касымова', 'Ахметжанова', 'Павлова', 'Нургалиева', 'Лебедева']
+  let tokaevKept = false
+  for (const e of out) {
+    const [first, last] = e.name.split(' ')
+    if (last !== 'Токаев' && last !== 'Токаева') continue
+    if (!tokaevKept) { tokaevKept = true; continue }
+    const alts = last === 'Токаев' ? altM : altF
+    const replacement = alts.map((l) => `${first} ${l}`).find((n) => !used.has(n))!
+    used.delete(e.name)
+    used.add(replacement)
+    e.name = replacement
+  }
   return out
 }
 

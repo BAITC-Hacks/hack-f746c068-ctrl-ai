@@ -36,7 +36,7 @@ export function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/" className="text-sm text-slate-500 hover:text-slate-800">← Все сотрудники</Link>
+      <Link to="/" className="inline-flex rounded-full bg-white/60 px-4 py-1.5 text-sm font-medium text-slate-600 ring-1 ring-black/5 backdrop-blur transition hover:bg-white hover:text-slate-900">← Все сотрудники</Link>
 
       {profile.data ? <ProfileHeader profile={profile.data} /> : <Skeleton className="h-28" />}
 
@@ -48,8 +48,8 @@ export function ProfilePage() {
       </div>
 
       <section>
-        <div className="mb-3 flex items-baseline justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">Рекомендации</h2>
+        <div className="mb-5 mt-4 flex items-baseline justify-between">
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Рекомендации</h2>
           <span className="hidden text-xs text-slate-500 sm:inline">ранжирование — детерминированный scoring, текст — LLM</span>
         </div>
 

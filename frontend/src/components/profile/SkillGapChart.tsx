@@ -12,7 +12,7 @@ export function SkillGapChart({ skills, nextGrade, highlight }: { skills: SkillL
         {sorted.map((s) => {
           const gap = Math.max(s.required - s.current, 0)
           return (
-            <div key={s.skill} className={cn('grid grid-cols-[minmax(0,9rem)_1fr_3.5rem] items-center gap-3 rounded-lg px-1 py-0.5 transition-colors duration-700', highlight === s.skill && 'bg-emerald-50')}>
+            <div key={s.skill} className={cn('grid grid-cols-[minmax(0,9rem)_1fr_3.5rem] items-center gap-3 rounded-lg px-1 py-0.5 transition-colors duration-700', highlight === s.skill && 'bg-emerald-500/10')}>
               <span className="truncate text-sm text-slate-700" title={s.skill}>{s.skill}</span>
               <div className="flex gap-1">
                 {Array.from({ length: MAX_LEVEL }, (_, i) => {
@@ -23,10 +23,10 @@ export function SkillGapChart({ skills, nextGrade, highlight }: { skills: SkillL
                     <div
                       key={i}
                       className={cn(
-                        'h-3 flex-1 rounded-sm transition-colors duration-700',
-                        filled && (highlight === s.skill && lvl === s.current ? 'bg-emerald-500' : 'bg-brand-500'),
+                        'h-3 flex-1 rounded-full transition-colors duration-700',
+                        filled && (highlight === s.skill && lvl === s.current ? 'bg-gradient-to-r from-[#30d158] to-[#34c759]' : 'bg-gradient-to-r from-[#0a84ff] to-[#5e5ce6]'),
                         missing && 'border border-dashed border-amber-400 bg-amber-100',
-                        !filled && !missing && 'bg-slate-100',
+                        !filled && !missing && 'bg-black/[0.05]',
                       )}
                     />
                   )
@@ -40,8 +40,8 @@ export function SkillGapChart({ skills, nextGrade, highlight }: { skills: SkillL
         })}
       </div>
       <div className="mt-4 flex flex-wrap gap-4 text-xs text-slate-500">
-        <span className="flex items-center gap-1.5"><i className="h-2.5 w-4 rounded-sm bg-brand-500" /> текущий уровень</span>
-        <span className="flex items-center gap-1.5"><i className="h-2.5 w-4 rounded-sm border border-dashed border-amber-400 bg-amber-100" /> разрыв до требования</span>
+        <span className="flex items-center gap-1.5"><i className="h-2.5 w-4 rounded-full bg-gradient-to-r from-[#0a84ff] to-[#5e5ce6]" /> текущий уровень</span>
+        <span className="flex items-center gap-1.5"><i className="h-2.5 w-4 rounded-full border border-dashed border-amber-400 bg-amber-100" /> разрыв до требования</span>
       </div>
     </Card>
   )
