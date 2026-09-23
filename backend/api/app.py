@@ -16,6 +16,7 @@ from pydantic import ValidationError
 from starlette.exceptions import HTTPException
 
 from backend.api.auth import Account, current_account, load_accounts, require_employee_access, require_hr
+from backend.api.ai import AIRecommendationResult, get_ai_recommendations
 from backend.api.imports import import_dataset, parse_upload
 from backend.data_loader import DEFAULT_DATA_DIR, DatasetValidationError, load_dataset
 from backend.engine.grade_progress import GradeReadinessResult, get_employee_grade_readiness
@@ -154,6 +155,15 @@ def create_app(*, state_path: str | Path | None = None, data_dir: str | Path | N
     def recommendations(employee_id: str, limit: int = Query(3, ge=1, le=3),
                         account: Account = Depends(require_employee_access), repository: DatasetStore = Depends(store)):
         return get_recommendations(repository.snapshot(), employee_id, limit)
+
+    @application.post("/employees/{employee_id}/ai/recommendations", response_model=AIRecommendationResult)
+    def ai_recommendations(employee_id: str, account: Account = Depends(require_employee_access),
+                           repository: DatasetStore = Depends(store)):
+        return get_ai_recommendations(
+            repository.snapshot(), employee_id,
+            api_key=os.environ.get("OPENAI_API_KEY"),
+            model=os.environ.get("CAREER_QUEST_OPENAI_MODEL", "gpt-4o-mini"),
+        )
 
     @application.get("/employees/{employee_id}/comparison-options", response_model=RecommendationResult)
     def comparison_options(employee_id: str, account: Account = Depends(require_employee_access),
