@@ -1,9 +1,12 @@
 import unittest
 from datetime import date
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from backend.data_loader import load_dataset
 from backend.engine.progress import ProgressError, complete_activity
 from backend.models import Dataset
-from backend.scripts.generate_demo_data import build_demo
+from backend.scripts.generate_demo_data import build_demo, write_demo
 
 
 class ProgressTests(unittest.TestCase):
@@ -71,7 +74,10 @@ class ProgressTests(unittest.TestCase):
             "status": "skipped", "event_date": "2026-09-01",
         })
         dataset = Dataset.model_validate(payload)
-        updated, result = complete_activity(dataset, "E999", "EV002", "NEW-H2", date(2026, 9, 23))
+        with TemporaryDirectory() as directory:
+            write_demo(dataset, Path(directory))
+            imported = load_dataset(directory)
+        updated, result = complete_activity(imported, "E999", "EV002", "NEW-H2", date(2026, 9, 23))
         self.assertEqual(result.skill_changes[0].before, 0)
         self.assertEqual(result.skill_changes[0].after, 1)
         self.assertGreater(result.readiness_after.readiness_percent,
