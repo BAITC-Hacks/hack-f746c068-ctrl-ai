@@ -33,6 +33,16 @@ class CliTests(unittest.TestCase):
         self.assertEqual(payload["target_grade"], "Senior")
         self.assertAlmostEqual(payload["readiness_percent"], 100 * 4.25 / 5.2)
 
+    def test_recommendation_and_limit(self):
+        result = self.run_cli("recommend", "E001", "--limit", "1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["status"], "recommended")
+        self.assertEqual([r["event_id"] for r in payload["recommendations"]], ["EV002"])
+        invalid = self.run_cli("recommend", "E001", "--limit", "4")
+        self.assertEqual(invalid.returncode, 1)
+        self.assertEqual(json.loads(invalid.stderr)["error"], "invalid_limit")
+
 
 if __name__ == "__main__":
     unittest.main()
