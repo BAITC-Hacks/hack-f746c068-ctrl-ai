@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import type { ProgressResult } from '../types'
-import { useCompleteActivity, useProfile, useRecommendations, useRejectActivity } from '../hooks/queries'
+import { completeAttempt, useCompleteActivity, useProfile, useRecommendations, useRejectActivity } from '../hooks/queries'
 import { ProfileHeader } from '../components/profile/ProfileHeader'
 import { SkillGapChart } from '../components/profile/SkillGapChart'
 import { GapList } from '../components/profile/GapList'
@@ -10,6 +10,7 @@ import { DecisionLab } from '../components/recommendations/DecisionLab'
 import { CompleteModal } from '../components/progress/CompleteModal'
 import { EmptyState, ErrorState, Skeleton } from '../components/ui'
 import { useAuth } from '../auth/AuthContext'
+import { ApiError, USE_MOCK } from '../api/client'
 
 export function ProfilePage() {
   const { id = '' } = useParams()
@@ -23,6 +24,7 @@ export function ProfilePage() {
   const [result, setResult] = useState<ProgressResult | null>(null)
   const [highlight, setHighlight] = useState<string | null>(null)
   const [previewEventId, setPreviewEventId] = useState('')
+  const completionKeys = useRef(new Map<string, string>())
 
   const onPreview = (eventId: string) => {
     setPreviewEventId(eventId)
@@ -30,9 +32,21 @@ export function ProfilePage() {
   }
 
   const onComplete = (aid: string) => {
+    const attempt = completeAttempt(aid, completionKeys.current.get(aid))
+    completionKeys.current.set(aid, attempt.idempotencyKey)
     setPending({ aid, kind: 'complete' })
-    complete.mutate(aid, {
-      onSuccess: (r) => { setResult(r); setHighlight(r.skill) },
+    complete.mutate(attempt, {
+      onSuccess: (r) => {
+        completionKeys.current.delete(aid)
+        setResult(r)
+        setHighlight(r.changes[0]?.skill ?? null)
+      },
+      // При неизвестном transport-исходе сохраняем UUID и используем его при
+      // ручном повторе; при определённом HTTP-ответе новая попытка получит новый ключ.
+      onError: (error) => {
+        const outcomeUnknown = error instanceof ApiError && (error.status === 0 || error.status >= 500)
+        if (!outcomeUnknown) completionKeys.current.delete(aid)
+      },
       onSettled: () => setPending(null),
     })
   }
@@ -63,6 +77,7 @@ export function ProfilePage() {
         </div>
 
         {recs.error && <ErrorState error={recs.error} onRetry={recs.refetch} />}
+        {complete.error && <ErrorState error={complete.error} />}
 
         {recs.isLoading && (
           <div className="space-y-4">
@@ -90,8 +105,8 @@ export function ProfilePage() {
               disabled={!!pending}
               onComplete={() => onComplete(r.activityId)}
               onPreview={() => onPreview(r.activityId)}
-              onSkip={() => onReject(r.activityId, 'skip')}
-              onDecline={() => onReject(r.activityId, 'decline')}
+              onSkip={USE_MOCK ? () => onReject(r.activityId, 'skip') : undefined}
+              onDecline={USE_MOCK ? () => onReject(r.activityId, 'decline') : undefined}
             />
           ))}
         </div>

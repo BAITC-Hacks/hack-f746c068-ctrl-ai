@@ -4,6 +4,7 @@ import { TopGapsChart } from '../components/hr/TopGapsChart'
 import { StatusFunnel } from '../components/hr/StatusFunnel'
 import { GapHeatmap } from '../components/hr/GapHeatmap'
 import { UncoveredTable } from '../components/hr/UncoveredTable'
+import { ActivityParticipationTable } from '../components/hr/ActivityParticipationTable'
 
 function Kpi({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
   return (
@@ -33,7 +34,7 @@ export function HrPage() {
         <>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Kpi label="Сотрудников" value={data.totalEmployees} />
-            <Kpi label="Средняя готовность" value={`${data.avgReadiness}%`} hint="к следующему грейду" />
+            <Kpi label="Средняя готовность" value={data.avgReadiness === null ? '—' : `${data.avgReadiness}%`} hint="к следующему грейду" />
             <Kpi
               label="Completion rate"
               value={`${Math.round((data.statusCounts.completed / Math.max(1, data.statusCounts.completed + data.statusCounts.skipped + data.statusCounts.declined)) * 100)}%`}
@@ -46,6 +47,7 @@ export function HrPage() {
             <StatusFunnel counts={data.statusCounts} />
           </div>
           <GapHeatmap data={data.gapsByRole} />
+          <ActivityParticipationTable rows={data.activities} />
           <UncoveredTable rows={data.uncovered} />
         </>
       )}

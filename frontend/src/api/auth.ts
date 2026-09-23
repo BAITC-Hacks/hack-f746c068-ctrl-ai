@@ -3,6 +3,7 @@ import { ApiError, request } from './client'
 
 // Ответ бэкенда GET /auth/me (backend/api/app.py → Identity)
 interface Identity { account_id: string; role: Role; employee_id: string | null }
+interface EmployeeIdentityProfile { employee: { name: string } }
 // Ответ мок-эндпоинтов /auth/login и /auth/register
 interface AuthResponse extends Identity { token: string; name: string; email: string }
 
@@ -23,8 +24,12 @@ export const authApi = {
 
   // Вход по токену доступа — так работает текущий FastAPI (токены в backend/runtime/access.json)
   loginWithToken: async (token: string): Promise<Session> => {
-    const r = await request<Identity>('/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+    const headers = { Authorization: `Bearer ${token}` }
+    const r = await request<Identity>('/auth/me', { headers })
     if (!r?.role) throw new ApiError(401, 'Недействительный токен')
-    return { token, accountId: r.account_id, role: r.role, employeeId: r.employee_id, name: r.role === 'hr' ? 'HR-менеджер' : r.account_id }
+    const name = r.role === 'hr' || !r.employee_id
+      ? 'HR-менеджер'
+      : (await request<EmployeeIdentityProfile>(`/employees/${encodeURIComponent(r.employee_id)}`, { headers })).employee.name
+    return { token, accountId: r.account_id, role: r.role, employeeId: r.employee_id, name }
   },
 }

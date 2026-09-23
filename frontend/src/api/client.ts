@@ -11,6 +11,18 @@ export class ApiError extends Error {
   }
 }
 
+export function createIdempotencyKey(): string {
+  const cryptoApi = globalThis.crypto
+  if (!cryptoApi) throw new ApiError(0, 'Браузер не поддерживает безопасную генерацию UUID')
+  if (typeof cryptoApi.randomUUID === 'function') return cryptoApi.randomUUID()
+
+  const bytes = cryptoApi.getRandomValues(new Uint8Array(16))
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = [...bytes].map((value) => value.toString(16).padStart(2, '0')).join('')
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+}
+
 // Запасной путь для мок-режима: если Service Worker не управляет страницей
 // (жёсткая перезагрузка Ctrl+F5, «Bypass for network» в DevTools, браузер без SW),
 // прогоняем запрос через те же MSW-обработчики прямо в странице.
@@ -23,13 +35,13 @@ async function mockFetch(url: string, init?: RequestInit): Promise<Response> {
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const url = `${API_URL}${path}`
   const token = getSession()?.token
+  const headers = new Headers(init?.headers)
+  if (token && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`)
+  if (init?.body !== undefined && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json')
+  if (!headers.has('Accept')) headers.set('Accept', 'application/json')
   const opts: RequestInit = {
     ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(init?.headers ?? {}),
-    },
+    headers,
   }
   const swActive = typeof navigator !== 'undefined' && !!navigator.serviceWorker?.controller
 
@@ -56,5 +68,11 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
         : typeof nestedDetail === 'string' ? nestedDetail : `Ошибка ${res.status}`
     throw new ApiError(res.status, message)
   }
-  return res.json() as Promise<T>
+  try {
+    return await res.json() as T
+  } catch {
+    // Для мутаций это неизвестный исход: сервер мог уже зафиксировать действие,
+    // а тело ответа оборвалось. ApiError(0) заставит retry сохранить тот же UUID.
+    throw new ApiError(0, 'Не удалось полностью прочитать ответ сервера')
+  }
 }
