@@ -2,6 +2,7 @@ from datetime import date
 import unittest
 
 from backend.api.presenters import PARTICIPATION_STATUSES, get_hr_dashboard
+from backend.engine.hr import get_hr_summary
 from backend.engine.progress import complete_activity
 from backend.models import Dataset
 from backend.scripts.generate_demo_data import build_demo
@@ -18,7 +19,16 @@ class HRDashboardTests(unittest.TestCase):
     def test_gap_prevalence_and_no_step_reasons_are_explicit(self):
         original = self.dataset.model_dump()
         result = get_hr_dashboard(self.dataset)
+        summary = get_hr_summary(self.dataset)
         self.assertEqual(result.total_employees, 5)
+        self.assertEqual(result.average_readiness_percent, summary.average_readiness_percent)
+        self.assertEqual(result.role_skill_deficits, summary.role_skill_deficits)
+        backend_design = next(item for item in result.role_skill_deficits
+                              if item.role == "Backend Engineer"
+                              and item.skill_id == "SK_SYSTEM_DESIGN")
+        self.assertEqual((backend_design.eligible_employees,
+                          backend_design.affected_employees,
+                          backend_design.average_gap_across_role), (2, 1, 1.0))
         gaps = {item.skill_id: item for item in result.top_skill_gaps}
         self.assertEqual((gaps["SK_SYSTEM_DESIGN"].employee_count, gaps["SK_SYSTEM_DESIGN"].total_gap), (1, 2))
         self.assertEqual((gaps["SK_PUBLIC_SPEAKING"].employee_count,
@@ -52,6 +62,7 @@ class HRDashboardTests(unittest.TestCase):
         before = get_hr_dashboard(self.dataset)
         updated, _ = complete_activity(self.dataset, "E001", "EV001", "HR_DONE", date(2026, 9, 23))
         after = get_hr_dashboard(updated)
+        self.assertGreater(after.average_readiness_percent, before.average_readiness_percent)
         self.assertEqual(after.participation["completed"], before.participation["completed"] + 1)
         design = next(item for item in after.top_skill_gaps if item.skill_id == "SK_SYSTEM_DESIGN")
         self.assertEqual(design.total_gap, 1)
@@ -59,6 +70,14 @@ class HRDashboardTests(unittest.TestCase):
         earlier_workshop = next(item for item in before.activities if item.event_id == "EV001")
         self.assertEqual(workshop.total_records, earlier_workshop.total_records + 1)
         self.assertEqual(workshop.unique_employees, earlier_workshop.unique_employees)
+        before_role_gap = next(item for item in before.role_skill_deficits
+                               if item.role == "Backend Engineer"
+                               and item.skill_id == "SK_SYSTEM_DESIGN")
+        after_role_gap = next(item for item in after.role_skill_deficits
+                              if item.role == "Backend Engineer"
+                              and item.skill_id == "SK_SYSTEM_DESIGN")
+        self.assertLess(after_role_gap.average_gap_across_role,
+                        before_role_gap.average_gap_across_role)
 
     def test_empty_history_and_catalog_return_zero_counts(self):
         payload = self.dataset.model_dump()

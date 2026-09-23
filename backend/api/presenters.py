@@ -6,7 +6,7 @@ from typing import Literal
 from pydantic import Field
 
 from backend.engine.grade_progress import GradeReadinessResult
-from backend.engine.hr import get_hr_summary
+from backend.engine.hr import RoleSkillDeficit, get_hr_summary
 from backend.engine.progress import complete_activity
 from backend.engine.recommendation import RecommendationResult
 from backend.engine.skill_gap import SkillGapResult, get_employee_skill_gaps
@@ -42,7 +42,9 @@ class ActivityParticipation(Model):
 
 class HRDashboardResult(Model):
     total_employees: int = Field(ge=0)
+    average_readiness_percent: float | None = Field(default=None, ge=0, le=100)
     top_skill_gaps: list[SkillGapSummary]
+    role_skill_deficits: list[RoleSkillDeficit]
     employees_without_recommendations: list[EmployeeWithoutRecommendations]
     participation: dict[str, int]
     activities: list[ActivityParticipation]
@@ -59,6 +61,7 @@ def get_hr_dashboard(dataset: Dataset) -> HRDashboardResult:
                 mandatory_counts[skill_id] = mandatory_counts.get(skill_id, 0) + 1
     return HRDashboardResult(
         total_employees=summary.total_employees,
+        average_readiness_percent=summary.average_readiness_percent,
         top_skill_gaps=sorted([
             SkillGapSummary(skill_id=item.skill_id, skill_name=item.skill_name,
                             employee_count=item.affected_employees,
@@ -66,6 +69,7 @@ def get_hr_dashboard(dataset: Dataset) -> HRDashboardResult:
                             total_gap=item.total_gap)
             for item in summary.skill_deficits
         ], key=lambda item: (-item.employee_count, -item.total_gap, item.skill_id)),
+        role_skill_deficits=summary.role_skill_deficits,
         employees_without_recommendations=[
             EmployeeWithoutRecommendations(employee_id=item.employee_id, name=item.name,
                                            role=item.role, grade=item.grade, reason=item.status)
