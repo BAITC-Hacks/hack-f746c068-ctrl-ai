@@ -19,8 +19,8 @@ from backend.api.auth import Account, current_account, load_accounts, require_em
 from backend.api.imports import import_dataset, parse_upload
 from backend.data_loader import DEFAULT_DATA_DIR, DatasetValidationError, load_dataset
 from backend.engine.grade_progress import GradeReadinessResult, get_employee_grade_readiness
-from backend.engine.hr import HRDashboardResult, get_hr_dashboard
-from backend.engine.progress import CompletionResult, ProgressError, complete_activity
+from backend.api.presenters import CompletionResponse, HRDashboardResult, complete_activity_response, get_hr_dashboard
+from backend.engine.progress import ProgressError
 from backend.engine.recommendation import RecommendationError, RecommendationResult, get_recommendations
 from backend.engine.skill_gap import SkillGapError, SkillGapResult, get_employee_skill_gaps
 from backend.models import Activity, CareerTrack, Employee, HistoryRecord, Model, Skill
@@ -159,13 +159,13 @@ def create_app(*, state_path: str | Path | None = None, data_dir: str | Path | N
             raise SkillGapError("employee_not_found", "Employee profile not found")
         return [e for e in dataset.events if e.active and employee.role in e.audience]
 
-    @application.post("/employees/{employee_id}/activities/{event_id}/complete", response_model=CompletionResult)
+    @application.post("/employees/{employee_id}/activities/{event_id}/complete", response_model=CompletionResponse)
     def complete(employee_id: str, event_id: str, response: Response,
                  idempotency_key: UUID = Header(alias="Idempotency-Key"),
                  account: Account = Depends(require_employee_access), repository: DatasetStore = Depends(store)):
         result, replayed = repository.complete(
             account.account_id, str(idempotency_key), f"{employee_id}/{event_id}",
-            lambda dataset: complete_activity(dataset, employee_id, event_id,
+            lambda dataset: complete_activity_response(dataset, employee_id, event_id,
                                              f"CMP_{uuid4().hex}", datetime.now(timezone.utc).date()),
         )
         response.headers["Idempotency-Replayed"] = str(replayed).lower()

@@ -14,7 +14,7 @@ from backend.api.app import create_app
 from backend.api.auth import Account
 from backend.data_loader import HISTORY_COLUMNS, load_dataset
 from backend.engine.grade_progress import get_employee_grade_readiness
-from backend.engine.hr import get_hr_dashboard
+from backend.api.presenters import get_hr_dashboard
 from backend.engine.recommendation import get_recommendations
 from backend.engine.skill_gap import get_employee_skill_gaps
 

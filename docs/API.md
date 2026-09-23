@@ -89,6 +89,9 @@ gain_applied = after - before
 
 Ответ содержит `employee_id`, `event_id`, `record_id`, `skill_changes`,
 `readiness_before`, `readiness_after`, `skill_gaps` и `recommendations`.
+Доменная функция команды возвращает `applied_gain` и рекомендации до/после;
+`backend/api/presenters.py` преобразует их в этот HTTP-контракт без повторного
+расчёта прироста. Тот же слой адаптирует `get_hr_summary` к HR-ответу.
 Изменения и сохранённый ответ записываются одной транзакцией. Конкурирующие изменения
 сериализуются SQLite; ошибка проверки не оставляет частичных изменений.
 
